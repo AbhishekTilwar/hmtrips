@@ -32,4 +32,28 @@ function App() {
 
   return (
     <>
-      {!splashRemoved && <SplashScreen visible={
+      {!splashRemoved && <SplashScreen visible={splashVisible} />}
+      <div className="min-h-screen flex flex-col pb-48 md:pb-20">
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 w-full bg-white transition-transform duration-300 ease-in-out ${
+          headerVisible ? 'translate-y-0' : '-translate-y-full'
+        }`}
+      >
+        <TopBar />
+        <Navbar />
+      </header>
+      <main className="flex-1 pt-[108px]">
+        <Routes>
+          <Route path="/" element={<UpcomingTours />} />
+          <Route path="/itinerary/:id" element={<Itinerary />} />
+        </Routes>
+      </main>
+      <Footer />
+      <StickyBottomBar />
+      <FloatingPhoneIcon />
+    </div>
+    </>
+  )
+}
+
+export default App
