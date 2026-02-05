@@ -34,16 +34,6 @@ const PRIVACY = [
   { label: 'Disclaimer Against Frauds', href: '#' },
 ]
 
-const AWARDS = [
-  'Great Place To Work Certified',
-  'ICONIC FAMILY CRUISE EXPERIENCE 2023',
-  'ICONIC CHOICE WEDDING CRUISE EVENTS 2023',
-  'HIGH SEA AND COASTAL CRUISES OF THE YEAR 2023',
-  'BEST CRUISE AND EXPEDITION 2023',
-  'MARITIME EXCELLENCE AWARDS 2023',
-  'BLTM EXCELLENCE AWARDS 2023',
-]
-
 export default function Footer() {
   return (
     <>
@@ -123,43 +113,28 @@ export default function Footer() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 py-8 border-y border-neutral-700/50 mb-10">
             <div>
               <h4 className="font-display font-semibold text-white text-sm mb-2">Group Travel Desk (Corporate / Travel Partner)</h4>
-              <p className="text-sm text-neutral-400 mb-1">022-65545206, +91 7738850000</p>
-              <p className="text-sm text-neutral-400 mb-1">travelops@hmtrips.com</p>
+              <p className="text-sm text-neutral-400 mb-1">022-65545206, +91 8805795706</p>
+              <p className="text-sm text-neutral-400 mb-1">travelops@hmtours.com</p>
               <p className="text-xs text-neutral-500">Mon–Fri 10 AM to 7 PM · Only for our Travel Partners</p>
             </div>
             <div>
               <h4 className="font-display font-semibold text-white text-sm mb-2">Customer Support</h4>
               <p className="text-sm text-neutral-400 mb-1">022-68811190</p>
-              <p className="text-sm text-neutral-400 mb-1">info@hmtrips.com</p>
+              <p className="text-sm text-neutral-400 mb-1">info@hmtours.com</p>
               <p className="text-xs text-neutral-500">Mon–Fri 9 AM to 8 PM · Sat/Sun & Public Holidays 10 AM to 7 PM</p>
             </div>
             <div>
               <h4 className="font-display font-semibold text-white text-sm mb-2">Book Now</h4>
-              <p className="text-sm text-neutral-400">+91 7738850000</p>
-              <p className="text-sm text-neutral-400">022-68811111</p>
-            </div>
-          </div>
-
-          {/* Awards and Recognition */}
-          <div className="mb-10">
-            <h4 className="font-display font-semibold text-white text-sm uppercase tracking-wider mb-4">Awards and Recognition</h4>
-            <div className="flex flex-wrap gap-3">
-              {AWARDS.map((award) => (
-                <span
-                  key={award}
-                  className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 text-neutral-300 text-xs font-medium border border-white/10"
-                >
-                  {award}
-                </span>
-              ))}
+              <p className="text-sm text-neutral-400">+91 8805795706</p>
+              <p className="text-sm text-neutral-400">Contact: Harsha Raut</p>
             </div>
           </div>
 
           <div className="pt-6 border-t border-neutral-800 flex flex-col sm:flex-row justify-between items-center gap-4">
-            <p className="text-neutral-500 text-sm text-center md:text-left">© {new Date().getFullYear()} HM Trips. All rights reserved.</p>
+            <p className="text-neutral-500 text-sm text-center md:text-left">© {new Date().getFullYear()} HM Tours. All rights reserved.</p>
             <Link to="/" className="flex items-center gap-2 text-white/80 hover:text-white transition-colors text-sm min-touch py-2 md:py-0">
               <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-violet-600 via-fuchsia-500 to-orange-500 text-white font-bold text-sm">HM</span>
-              HM TRIPS
+              HM TOURS
             </Link>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-const STORAGE_KEY = 'hmtrips_guidance_modal_closed'
+const STORAGE_KEY = 'hmtours_guidance_modal_closed'
 
 export default function GuidanceModal({ open, onClose }) {
   useEffect(() => {
@@ -76,10 +76,10 @@ export default function GuidanceModal({ open, onClose }) {
               Request a Callback
             </button>
             <a
-              href="tel:022-68811111"
+              href="tel:+918805795706"
               className="w-full min-h-[44px] md:min-h-0 py-3.5 px-6 rounded-xl font-medium text-center border-2 border-violet-600 text-violet-700 bg-white hover:bg-violet-50 transition-colors flex items-center justify-center"
             >
-              Call - 022-68811111
+              Call Harsha Raut - +91 8805795706
             </a>
             <a
               href="#login"

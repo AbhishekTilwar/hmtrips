@@ -1,6 +1,6 @@
-# HM Trips — Tours & Packages
+# HM Tours — Tours & Packages
 
-Tours and packages website for **HM Trips**. Plan your vacation with trips, itineraries, and travel planning. Built with React, Vite, and Tailwind CSS.
+Tours and packages website for **HM Tours**. Plan your vacation with trips, itineraries, and travel planning. Built with React, Vite, and Tailwind CSS.
 
 ## Features
 

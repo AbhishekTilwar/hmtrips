@@ -17,7 +17,7 @@ export default function UpcomingTours() {
 
   useEffect(() => {
     try {
-      if (localStorage.getItem('hmtrips_guidance_modal_closed') === 'true') return
+      if (localStorage.getItem('hmtours_guidance_modal_closed') === 'true') return
     } catch (_) {}
     const t = setTimeout(() => setShowGuidanceModal(true), 1500)
     return () => clearTimeout(t)

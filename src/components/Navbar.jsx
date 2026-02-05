@@ -13,7 +13,7 @@ export default function Navbar() {
               HM
             </span>
             <span className="font-display text-xl font-semibold text-neutral-950 tracking-tight hidden sm:inline">
-              HM TRIPS
+              HM TOURS
             </span>
           </Link>
 

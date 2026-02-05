@@ -10,7 +10,7 @@ export default function PromoBanner() {
             Family Fun, Ocean Sun & Zero Hassle!
           </h2>
           <p className="text-white/90 text-sm md:text-base mb-3">
-            Plan your perfect getaway with <span className="font-semibold text-white">HM Trips</span>.
+            Plan your perfect getaway with <span className="font-semibold text-white">HM Tours</span>.
           </p>
           <Link
             to="/"
@@ -23,7 +23,7 @@ export default function PromoBanner() {
         <div className="relative z-10 hidden md:block flex-shrink-0 w-36 h-36 lg:w-40 lg:h-40 rounded-xl overflow-hidden border-2 border-white/30 shadow-xl">
           <img
             src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500&q=80"
-            alt="Happy travellers with HM Trips"
+            alt="Happy travellers with HM Tours"
             className="w-full h-full object-cover"
           />
         </div>

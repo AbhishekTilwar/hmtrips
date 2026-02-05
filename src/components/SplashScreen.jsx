@@ -21,7 +21,7 @@ export default function SplashScreen({ visible }) {
         </div>
         {/* Brand name */}
         <h1 className="font-display text-2xl sm:text-3xl font-semibold text-neutral-950 tracking-tight opacity-0 animate-fade-in [animation-fill-mode:forwards] [animation-delay:200ms]">
-          HM Trips
+          HM Tours
         </h1>
         <p className="text-sm text-neutral-500 opacity-0 animate-fade-in [animation-fill-mode:forwards] [animation-delay:400ms]">
           Explore Trips & Holidays

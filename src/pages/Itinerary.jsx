@@ -170,7 +170,7 @@ export default function Itinerary() {
           <div className="space-y-8">
             {tour.itinerary.map((day, i) => (
               <div key={day.day} className="flex gap-4 md:gap-6">
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-violet-600 text-white text-sm font-bold">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-violet-600 text-white font-display text-sm font-bold">
                   Day {day.day}
                 </div>
                 <div className="flex-1 min-w-0 overflow-visible">
