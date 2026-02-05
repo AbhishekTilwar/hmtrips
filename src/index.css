@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply font-body text-neutral-950 bg-white antialiased;
+  }
+}
+
+/* Smooth transitions for interactive elements */
+a, button {
+  @apply transition-colors duration-200 ease-out;
+}
+
+/* Safe area for notched devices */
+.safe-area-inset-top {
+  padding-top: max(0.5rem, env(safe-area-inset-top, 0px));
+}
+.safe-area-inset-bottom {
+  padding-bottom: max(0.5rem, env(safe-area-inset-bottom, 0px));
+}
+
+/* Minimum touch target ~44px */
+.min-touch {
+  min-height: 44px;
+  min-width: 44px;
+}
+@media (pointer: fine) {
+  .min-touch {
+    min-height: 0;
+    min-width: 0;
+  }
+}
+
+@layer components {
+  .btn-gradient {
+    @apply inline-flex items-center justify-center px-6 py-3 font-medium text-white rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-violet-400 focus:ring-offset-2;
+    background: linear-gradient(135deg, #7c3aed 0%, #c026d3 50%, #ea580c 100%);
+  }
+  .btn-gradient:hover {
+    background: linear-gradient(135deg, #8b5cf6 0%, #d946ef 50%, #f97316 100%);
+    box-shadow: 0 10px 15px -3px rgba(124, 58, 237, 0.3);
+  }
+  .btn-outline-purple {
+    @apply inline-flex items-center justify-center px-6 py-3 font-medium text-brand-purple border-2 border-brand-purple bg-white rounded-lg hover:bg-violet-50 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-violet-300 focus:ring-offset-2;
+  }
+}
+
+.stagger > * {
+  animation: slideUp 0.5s ease-out forwards;
+}
+.stagger > *:nth-child(1) { animation-delay: 0.05s; opacity: 0; }
+.stagger > *:nth-child(2) { animation-delay: 0.1s; opacity: 0; }
+.stagger > *:nth-child(3) { animation-delay: 0.15s; opacity: 0; }
+.stagger > *:nth-child(4) { animation-delay: 0.2s; opacity: 0; }
+.stagger > *:nth-child(5) { animation-delay: 0.25s; opacity: 0; }
+.stagger > *:nth-child(6) { animation-delay: 0.3s; opacity: 0; }
+.stagger > *:nth-child(7) { animation-delay: 0.35s; opacity: 0; }
+.stagger > *:nth-child(8) { animation-delay: 0.4s; opacity: 0; }
+.stagger > *:nth-child(9) { animation-delay: 0.45s; opacity: 0; }
