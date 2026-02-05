@@ -1,6 +1,5 @@
 import { useParams, Link } from 'react-router-dom'
 import { getTourById } from '../data/tours'
-import ItineraryMap from '../components/ItineraryMap'
 import ScrollReveal from '../components/ScrollReveal'
 
 export default function Itinerary() {
@@ -76,9 +75,6 @@ export default function Itinerary() {
           </div>
         </div>
       </section>
-
-      {/* Map */}
-      <ItineraryMap tour={tour} />
 
       {/* Trip summary strip */}
       <section className="bg-white border-b border-neutral-200 shadow-sm">
