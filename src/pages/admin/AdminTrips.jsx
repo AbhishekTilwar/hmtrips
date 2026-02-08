@@ -24,12 +24,46 @@ const defaultTrip = {
   exclusions: [],
 }
 
+// Sample trip for "Auto-fill" — appears on website after you save
+const SAMPLE_TRIP = {
+  name: 'Mumbai → Goa Express (Sample)',
+  tagline: '3-Night Weekend Getaway',
+  shipName: 'EMPRESS',
+  origin: 'Mumbai',
+  destination: 'Goa',
+  nights: 3,
+  departureDate: '2026-04-15',
+  endDate: '2026-04-18',
+  image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80',
+  pricePerGuest: 14999,
+  pricePerNight: 4999,
+  offer: 'Flat 10% Off',
+  offers: ['2nd Guest Free', '25% Discount'],
+  viewing: 0,
+  ports: ['Mumbai', 'Goa', 'Goa', 'Mumbai'],
+  highlights: ['Quick escape', 'Goa shores', 'Pool parties', 'Live music'],
+  highlightImages: [
+    'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&q=80',
+    'https://images.unsplash.com/photo-1536935338788-423bbd3fd26e?w=600&q=80',
+    'https://images.unsplash.com/photo-1571266028243-d220e8d2d7e2?w=600&q=80',
+    'https://images.unsplash.com/photo-1506157786151-b8491531f063?w=600&q=80',
+  ],
+  itinerary: [
+    { day: 1, port: 'Mumbai Port', description: 'Embarkation. Sail at 6:00 PM. Welcome dinner and live entertainment.' },
+    { day: 2, port: 'Goa Port', description: 'Arrive in Goa by afternoon. Evening at leisure. Overnight in port.' },
+    { day: 3, port: 'Goa Port', description: 'Full day in Goa. Beach and city tours, or relax on board.' },
+    { day: 4, port: 'Mumbai Port', description: 'Disembarkation by noon after breakfast.' },
+  ],
+  inclusions: ['Cabin accommodation', 'All meals', 'Entertainment', 'Pool access'],
+  exclusions: ['Shore excursions', 'Spa', 'Alcoholic beverages'],
+}
+
 function parseList(val) {
   if (typeof val === 'string') return val.split(',').map((s) => s.trim()).filter(Boolean)
   return Array.isArray(val) ? val : []
 }
 
-function TripForm({ trip, onSave, onCancel, saving }) {
+function TripForm({ trip, onSave, onCancel, saving, onFillSample }) {
   const [form, setForm] = useState(trip || defaultTrip)
 
   const update = (key, value) => setForm((f) => ({ ...f, [key]: value }))
@@ -74,6 +108,20 @@ function TripForm({ trip, onSave, onCancel, saving }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 max-w-3xl">
+      {onFillSample && (
+        <div className="flex flex-wrap items-center gap-3 p-4 bg-amber-50 border border-amber-200 rounded-xl">
+          <p className="text-sm text-amber-800 flex-1 min-w-0">
+            Fill the form with sample trip data, then click &quot;Create trip&quot;. The trip will appear on the website.
+          </p>
+          <button
+            type="button"
+            onClick={() => setForm({ ...SAMPLE_TRIP })}
+            className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-lg text-sm whitespace-nowrap"
+          >
+            Auto-fill sample trip
+          </button>
+        </div>
+      )}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="md:col-span-2">
           <label className="block text-sm font-medium text-slate-700 mb-1">Trip name *</label>
@@ -367,6 +415,7 @@ export default function AdminTrips() {
           onSave={handleSave}
           onCancel={() => { setCreating(false); setEditing(null) }}
           saving={saving}
+          onFillSample={creating}
         />
       </div>
     )
@@ -374,7 +423,7 @@ export default function AdminTrips() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold text-slate-900">Trips</h1>
         <button
           type="button"
@@ -384,9 +433,14 @@ export default function AdminTrips() {
           + Add trip
         </button>
       </div>
+      <p className="text-sm text-slate-600 mb-6">
+        Trips you create here are the source of truth for the website. They appear on the homepage and itinerary pages. Visitors see these when they load or refresh the tours page.
+      </p>
       <div className="bg-white rounded-xl shadow overflow-hidden">
         {list.length === 0 ? (
-          <p className="p-8 text-slate-500 text-center">No trips. Create one to show on the site.</p>
+          <p className="p-8 text-slate-500 text-center">
+            No trips yet. Click &quot;+ Add trip&quot; and use &quot;Auto-fill sample trip&quot; to add a demo trip — it will show on the website after you save.
+          </p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
