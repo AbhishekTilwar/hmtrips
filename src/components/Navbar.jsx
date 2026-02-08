@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
-export default function Navbar() {
+export default function Navbar({ onLoginClick }) {
   const [open, setOpen] = useState(false)
 
   return (
@@ -34,10 +34,10 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center gap-3">
             <Link to="/" className="btn-gradient text-sm py-2.5 px-5">Find A Trip</Link>
             <button type="button" className="btn-outline-purple text-sm py-2.5 px-5">Check-in</button>
-            <a href="#login" className="flex items-center gap-2 text-neutral-700 hover:text-brand-blue font-medium transition-colors">
+            <button type="button" onClick={() => onLoginClick?.()} className="flex items-center gap-2 text-neutral-700 hover:text-brand-blue font-medium transition-colors">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
               Login / Register
-            </a>
+            </button>
           </div>
 
           <button
@@ -62,7 +62,7 @@ export default function Navbar() {
             <div className="p-4 space-y-2 border-t border-neutral-200 mt-2">
               <Link to="/" className="btn-gradient flex items-center justify-center min-h-[44px] w-full" onClick={() => setOpen(false)}>Find A Trip</Link>
               <button type="button" className="btn-outline-purple w-full min-h-[44px]" onClick={() => setOpen(false)}>Check-in</button>
-              <a href="#login" className="block py-3 text-center text-neutral-700 hover:text-brand-blue min-h-[44px] flex items-center justify-center" onClick={() => setOpen(false)}>Login / Register</a>
+              <button type="button" className="block py-3 text-center text-neutral-700 hover:text-brand-blue min-h-[44px] w-full" onClick={() => { setOpen(false); onLoginClick?.(); }}>Login / Register</button>
             </div>
           </div>
         )}

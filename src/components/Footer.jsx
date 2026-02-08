@@ -18,6 +18,7 @@ const LINKS = [
   { label: 'Blogs', href: '#' },
   { label: 'Group Booking Form', href: '#' },
   { label: 'Agent Login', href: '#' },
+  { label: 'Admin', href: '/admin/login', internal: true },
   { label: 'About Us', href: '#' },
   { label: 'Ports', href: '#' },
   { label: 'Website T&C', href: '#' },
@@ -90,9 +91,13 @@ export default function Footer() {
             <div>
               <h4 className="font-display font-semibold text-white text-sm uppercase tracking-wider mb-4">Links</h4>
               <ul className="space-y-0 md:space-y-2.5">
-                {LINKS.map(({ label, href }) => (
+                {LINKS.map(({ label, href, internal }) => (
                   <li key={label}>
-                    <a href={href} className="block py-2.5 md:py-0 md:inline text-sm text-neutral-400 hover:text-white transition-colors min-touch">{label}</a>
+                    {internal ? (
+                      <Link to={href} className="block py-2.5 md:py-0 md:inline text-sm text-neutral-400 hover:text-white transition-colors min-touch">{label}</Link>
+                    ) : (
+                      <a href={href} className="block py-2.5 md:py-0 md:inline text-sm text-neutral-400 hover:text-white transition-colors min-touch">{label}</a>
+                    )}
                   </li>
                 ))}
               </ul>

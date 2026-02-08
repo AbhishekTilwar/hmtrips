@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect } from 'react'
-import { tours, DESTINATIONS, MONTHS, NIGHTS_OPTIONS, TRIP_NAMES } from '../data/tours'
+import { tours as staticTours, DESTINATIONS, MONTHS, NIGHTS_OPTIONS } from '../data/tours'
+import { useTours } from '../data/toursData'
 import TourCard from '../components/TourCard'
 import CallbackCard from '../components/CallbackCard'
 import GuidanceModal from '../components/GuidanceModal'
@@ -10,7 +11,10 @@ export default function UpcomingTours() {
   const [destination, setDestination] = useState(DESTINATIONS[0])
   const [month, setMonth] = useState(MONTHS[0])
   const [nights, setNights] = useState(NIGHTS_OPTIONS[0])
-  const [tripName, setTripName] = useState(TRIP_NAMES[0])
+  const { tours: toursFromFirestore, loading: toursLoading } = useTours()
+  const tours = toursFromFirestore.length > 0 ? toursFromFirestore : staticTours
+  const TRIP_NAMES = ['Trip name?', ...tours.map((t) => t.name)]
+  const [tripName, setTripName] = useState('Trip name?')
   const [sortBy, setSortBy] = useState('date')
   const [filterOpen, setFilterOpen] = useState(false)
   const [showGuidanceModal, setShowGuidanceModal] = useState(false)
@@ -25,6 +29,9 @@ export default function UpcomingTours() {
 
   const filteredTours = useMemo(() => {
     let list = [...tours]
+    if (tripName && tripName !== 'Trip name?') {
+      list = list.filter((t) => t.name === tripName)
+    }
     if (destination && destination !== 'Where to?') {
       list = list.filter((t) =>
         t.destination.toLowerCase().includes(destination.toLowerCase()) ||
@@ -40,9 +47,6 @@ export default function UpcomingTours() {
     if (nights && nights !== 'Nights?') {
       const n = parseInt(nights, 10)
       if (!isNaN(n)) list = list.filter((t) => t.nights === n)
-    }
-    if (tripName && tripName !== 'Trip name?') {
-      list = list.filter((t) => t.name === tripName)
     }
     if (sortBy === 'date') {
       list.sort((a, b) => new Date(a.departureDate) - new Date(b.departureDate))

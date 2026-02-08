@@ -1,11 +1,119 @@
+import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
+import { useTourById } from '../data/toursData'
 import { getTourById } from '../data/tours'
+import { useAuth } from '../contexts/AuthContext'
+import { createOrder, createPayment, createInquiry } from '../lib/firestore'
 import ScrollReveal from '../components/ScrollReveal'
+
+function BookSection({ tour, formatPrice }) {
+  const { user } = useAuth()
+  const [guests, setGuests] = useState(1)
+  const [message, setMessage] = useState('')
+  const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setSubmitting(true)
+    try {
+      const amount = (tour.pricePerGuest || 0) * guests
+      const orderId = await createOrder({
+        userId: user?.uid || null,
+        userEmail: user?.email || null,
+        userPhone: user?.phoneNumber || null,
+        userName: user?.displayName || null,
+        tourId: tour.id,
+        tourName: tour.name,
+        amount,
+        guests,
+        status: 'pending',
+      })
+      await createPayment({ orderId, userId: user?.uid || null, amount, status: 'pending', method: 'online' })
+      if (message) {
+        await createInquiry({
+          userId: user?.uid || null,
+          userEmail: user?.email || null,
+          userPhone: user?.phoneNumber || null,
+          userName: user?.displayName || null,
+          tourId: tour.id,
+          tourName: tour.name,
+          message,
+        })
+      }
+      setSubmitted(true)
+    } catch (_) {
+      setSubmitted(true)
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  if (submitted) {
+    return (
+      <section id="book" className="py-12 md:py-20 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="font-display text-2xl font-semibold text-neutral-950 mb-2">Booking request sent</h2>
+          <p className="text-neutral-600">We&apos;ll confirm your booking and payment details shortly.</p>
+        </div>
+      </section>
+    )
+  }
+
+  return (
+    <section id="book" className="py-12 md:py-20 bg-white">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className="font-display text-2xl md:text-3xl font-semibold text-neutral-950 mb-4 text-center">
+          Ready to Sail?
+        </h2>
+        <p className="text-neutral-700 text-sm md:text-base mb-8 max-w-xl mx-auto text-center">
+          Secure your spot for {tour.name}. From {formatPrice(tour.pricePerGuest)} per guest.
+        </p>
+        <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-neutral-700 mb-1">Number of guests</label>
+            <input
+              type="number"
+              min={1}
+              value={guests}
+              onChange={(e) => setGuests(Number(e.target.value) || 1)}
+              className="w-full px-4 py-3 rounded-lg border border-neutral-300"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-neutral-700 mb-1">Message (optional)</label>
+            <textarea
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              rows={2}
+              className="w-full px-4 py-3 rounded-lg border border-neutral-300"
+              placeholder="Special requests..."
+            />
+          </div>
+          <p className="text-sm text-neutral-600">
+            Total: ₹{((tour.pricePerGuest || 0) * guests).toLocaleString('en-IN')} (payment will be confirmed by our team)
+          </p>
+          <button type="submit" disabled={submitting} className="btn-gradient w-full py-4 rounded-lg disabled:opacity-50">
+            {submitting ? 'Submitting…' : 'Book Now'}
+          </button>
+        </form>
+      </div>
+    </section>
+  )
+}
 
 export default function Itinerary() {
   const { id } = useParams()
-  const tour = getTourById(id)
+  const { tour: tourFromHook, loading } = useTourById(id)
+  const tour = tourFromHook || (id ? getTourById(id) : null)
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-neutral-50 pt-20">
+        <p className="text-neutral-600">Loading…</p>
+      </div>
+    )
+  }
   if (!tour) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-neutral-50 pt-20">
@@ -289,20 +397,8 @@ export default function Itinerary() {
         </div>
       </section>
 
-      {/* Book CTA */}
-      <section id="book" className="py-12 md:py-20 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="font-display text-2xl md:text-3xl font-semibold text-neutral-950 mb-4">
-            Ready to Sail?
-          </h2>
-          <p className="text-neutral-700 text-sm md:text-base mb-8 max-w-xl mx-auto">
-            Secure your spot for {tour.name}. From {formatPrice(tour.pricePerGuest)} per guest.
-          </p>
-          <a href="#" className="btn-gradient text-base md:text-lg px-8 md:px-10 py-4 min-h-[44px] md:min-h-0 inline-flex items-center justify-center w-full sm:w-auto">
-            Book Now
-          </a>
-        </div>
-      </section>
+      {/* Book CTA + form (creates order & payment for admin) */}
+      <BookSection tour={tour} formatPrice={formatPrice} />
     </>
   )
 }
