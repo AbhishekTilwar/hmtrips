@@ -51,7 +51,7 @@ export default function Itinerary() {
             </svg>
             Back to Upcoming Tours
           </Link>
-          <p className="text-violet-300 font-medium uppercase tracking-wider text-sm mb-2">
+          <p className="text-blue-300 font-medium uppercase tracking-wider text-sm mb-2">
             {tour.tagline}
           </p>
           <h1 className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-white leading-tight max-w-4xl">
@@ -97,7 +97,7 @@ export default function Itinerary() {
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <div className="text-left md:text-right w-full sm:w-auto">
                 <p className="text-xs text-neutral-500 uppercase tracking-wider">Starting From</p>
-                <p className="font-display text-xl md:text-2xl font-semibold bg-gradient-to-r from-violet-600 to-orange-500 bg-clip-text text-transparent">
+                <p className="font-display text-xl md:text-2xl font-semibold bg-gradient-to-r from-blue-600 to-sky-500 bg-clip-text text-transparent">
                   ₹{tour.pricePerGuest?.toLocaleString('en-IN')}
                 </p>
                 <p className="text-xs text-neutral-500">Excl. GST Per Person in Double Occupancy</p>
@@ -170,7 +170,7 @@ export default function Itinerary() {
           <div className="space-y-8">
             {tour.itinerary.map((day, i) => (
               <div key={day.day} className="flex gap-4 md:gap-6">
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-violet-600 text-white font-display text-sm font-bold">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-blue-600 text-white font-display text-sm font-bold">
                   Day {day.day}
                 </div>
                 <div className="flex-1 min-w-0 overflow-visible">
@@ -207,7 +207,7 @@ export default function Itinerary() {
                 </div>
               ))}
             </div>
-            <Link to="#itinerary" className="inline-flex items-center gap-1 mt-4 text-violet-600 font-medium text-sm hover:text-violet-700">
+            <Link to="#itinerary" className="inline-flex items-center gap-1 mt-4 text-blue-600 font-medium text-sm hover:text-blue-700">
               View Full Itinerary
               <span className="text-lg">&gt;</span>
             </Link>
@@ -237,7 +237,7 @@ export default function Itinerary() {
               {tour.inclusionNote && (
                 <p className="mt-4 text-neutral-500 text-sm">{tour.inclusionNote}</p>
               )}
-              <a href="#inclusions" className="inline-flex items-center gap-1 mt-4 text-violet-600 font-medium text-sm hover:text-violet-700">
+              <a href="#inclusions" className="inline-flex items-center gap-1 mt-4 text-blue-600 font-medium text-sm hover:text-blue-700">
                 View Inclusions & Exclusions
                 <span className="text-lg">&gt;</span>
               </a>

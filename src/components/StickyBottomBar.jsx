@@ -40,7 +40,7 @@ export default function StickyBottomBar() {
       className={`fixed bottom-0 left-0 right-0 z-40 text-white shadow-[0_-4px_24px_rgba(0,0,0,0.15)] safe-area-inset-bottom transition-transform duration-300 ease-out ${
         visible ? 'translate-y-0' : 'translate-y-full'
       }`}
-      style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #c026d3 50%, #ea580c 100%)' }}
+      style={{ background: 'linear-gradient(135deg, #1e40af 0%, #2563eb 50%, #0ea5e9 100%)' }}
     >
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <button
@@ -68,7 +68,7 @@ export default function StickyBottomBar() {
                 className="flex-1 min-w-0 w-32 sm:w-44 px-4 py-3 md:py-2.5 min-h-[44px] md:min-h-0 bg-transparent text-white placeholder-white/70 text-sm focus:outline-none"
               />
             </div>
-            <button type="button" className="bg-white text-violet-700 font-medium py-3 md:py-2.5 px-5 min-h-[44px] md:min-h-0 rounded-lg text-sm whitespace-nowrap hover:bg-white/90 transition-colors">
+            <button type="button" className="bg-white text-blue-700 font-medium py-3 md:py-2.5 px-5 min-h-[44px] md:min-h-0 rounded-lg text-sm whitespace-nowrap hover:bg-white/90 transition-colors">
               Get OTP
             </button>
             <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
@@ -79,7 +79,7 @@ export default function StickyBottomBar() {
                 onChange={handleOtpChange}
                 className="w-full sm:w-28 px-4 py-3 md:py-2.5 min-h-[44px] md:min-h-0 rounded-lg border border-white/30 bg-white/10 text-white placeholder-white/70 text-sm focus:outline-none focus:ring-2 focus:ring-white/50"
               />
-              <button type="button" className="bg-white text-violet-700 font-medium py-3 md:py-2.5 px-5 min-h-[44px] md:min-h-0 rounded-lg text-sm whitespace-nowrap hover:bg-white/90 transition-colors shrink-0">
+              <button type="button" className="bg-white text-blue-700 font-medium py-3 md:py-2.5 px-5 min-h-[44px] md:min-h-0 rounded-lg text-sm whitespace-nowrap hover:bg-white/90 transition-colors shrink-0">
                 Verify & Continue
               </button>
             </div>

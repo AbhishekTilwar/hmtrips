@@ -89,7 +89,7 @@ export default function UpcomingTours() {
                 <select
                   value={destination}
                   onChange={(e) => setDestination(e.target.value)}
-                  className="w-full rounded-lg border border-neutral-300 bg-white px-4 py-3 min-h-[44px] md:min-h-0 text-neutral-800 font-medium focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent"
+                  className="w-full rounded-lg border border-neutral-300 bg-white px-4 py-3 min-h-[44px] md:min-h-0 text-neutral-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                 >
                   {DESTINATIONS.map((d) => (
                     <option key={d} value={d}>{d}</option>
@@ -101,7 +101,7 @@ export default function UpcomingTours() {
                 <select
                   value={month}
                   onChange={(e) => setMonth(e.target.value)}
-                  className="w-full rounded-lg border border-neutral-300 bg-white px-4 py-3 min-h-[44px] md:min-h-0 text-neutral-800 font-medium focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent"
+                  className="w-full rounded-lg border border-neutral-300 bg-white px-4 py-3 min-h-[44px] md:min-h-0 text-neutral-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                 >
                   {MONTHS.map((m) => (
                     <option key={m} value={m}>{m}</option>
@@ -113,7 +113,7 @@ export default function UpcomingTours() {
                 <select
                   value={nights}
                   onChange={(e) => setNights(e.target.value)}
-                  className="w-full rounded-lg border border-neutral-300 bg-white px-4 py-3 min-h-[44px] md:min-h-0 text-neutral-800 font-medium focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent"
+                  className="w-full rounded-lg border border-neutral-300 bg-white px-4 py-3 min-h-[44px] md:min-h-0 text-neutral-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                 >
                   {NIGHTS_OPTIONS.map((n) => (
                     <option key={n} value={n}>{n}</option>
@@ -125,7 +125,7 @@ export default function UpcomingTours() {
                 <select
                   value={tripName}
                   onChange={(e) => setTripName(e.target.value)}
-                  className="w-full rounded-lg border border-neutral-300 bg-white px-4 py-3 min-h-[44px] md:min-h-0 text-neutral-800 font-medium focus:outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent"
+                  className="w-full rounded-lg border border-neutral-300 bg-white px-4 py-3 min-h-[44px] md:min-h-0 text-neutral-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                 >
                   {TRIP_NAMES.map((c) => (
                     <option key={c} value={c}>{c}</option>
@@ -172,7 +172,7 @@ export default function UpcomingTours() {
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="rounded-lg border border-neutral-300 bg-white px-4 py-3 md:py-2 min-h-[44px] md:min-h-0 text-neutral-700 font-medium focus:outline-none focus:ring-2 focus:ring-violet-400"
+                    className="rounded-lg border border-neutral-300 bg-white px-4 py-3 md:py-2 min-h-[44px] md:min-h-0 text-neutral-700 font-medium focus:outline-none focus:ring-2 focus:ring-blue-400"
                   >
                     <option value="date">Departure Date</option>
                     <option value="price">Price (Low to High)</option>

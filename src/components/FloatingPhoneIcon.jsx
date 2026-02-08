@@ -2,10 +2,10 @@ export default function FloatingPhoneIcon() {
   return (
     <a
       href="tel:+918805795706"
-      className="fixed bottom-32 md:bottom-24 right-4 md:right-6 z-50 flex h-14 w-14 min-touch items-center justify-center rounded-full text-white shadow-lg transition-opacity hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-violet-600"
+      className="fixed bottom-32 md:bottom-24 right-4 md:right-6 z-50 flex h-14 w-14 min-touch items-center justify-center rounded-full text-white shadow-lg transition-opacity hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600"
       style={{
         marginBottom: 'max(0px, env(safe-area-inset-bottom, 0px))',
-        background: 'linear-gradient(135deg, #7c3aed 0%, #c026d3 50%, #ea580c 100%)',
+        background: 'linear-gradient(135deg, #1e40af 0%, #2563eb 50%, #0ea5e9 100%)',
       }}
       aria-label="Call travel expert"
     >

@@ -26,7 +26,7 @@ export default function ItineraryMap({ tour }) {
             <path
               d="M 180 180 Q 350 80 520 160 Q 600 200 520 260 Q 400 280 180 220"
               fill="none"
-              stroke="#7c3aed"
+              stroke="#2563eb"
               strokeWidth="4"
               strokeDasharray="12 8"
               strokeLinecap="round"

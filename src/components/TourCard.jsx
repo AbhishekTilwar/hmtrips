@@ -20,7 +20,7 @@ export default function TourCard({ tour }) {
             alt={tour.name}
             className="absolute inset-0 w-full h-full object-cover"
           />
-          <div className="absolute top-4 left-4 px-3 py-1.5 rounded-lg bg-brand-purple text-white text-xs font-semibold uppercase tracking-wide">
+          <div className="absolute top-4 left-4 px-3 py-1.5 rounded-lg bg-brand-blue text-white text-xs font-semibold uppercase tracking-wide">
             {tour.shipName || tour.tagline}
           </div>
         </div>
@@ -64,7 +64,7 @@ export default function TourCard({ tour }) {
             </span>
             <div className="text-right">
               <p className="text-neutral-500 text-xs uppercase tracking-wider">Starting From</p>
-              <p className="font-display text-xl md:text-2xl font-semibold bg-gradient-to-r from-brand-purple to-brand-orange bg-clip-text text-transparent">
+              <p className="font-display text-xl md:text-2xl font-semibold bg-gradient-to-r from-brand-blue to-brand-sky bg-clip-text text-transparent">
                 ₹{tour.pricePerGuest?.toLocaleString('en-IN')}
               </p>
               <p className="text-neutral-500 text-xs mt-0.5">Excl. GST Per Person in Double Occupancy</p>

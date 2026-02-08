@@ -9,13 +9,13 @@ export default function SplashScreen({ visible }) {
       {/* Gradient background accent */}
       <div
         className="absolute inset-0 opacity-[0.06]"
-        style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #c026d3 50%, #ea580c 100%)' }}
+        style={{ background: 'linear-gradient(135deg, #1e40af 0%, #2563eb 50%, #0ea5e9 100%)' }}
       />
       <div className="relative z-10 flex flex-col items-center justify-center gap-6">
         {/* Logo */}
         <div
           className="flex h-20 w-20 sm:h-24 sm:w-24 items-center justify-center rounded-2xl text-white shadow-lg opacity-0 animate-fade-in [animation-fill-mode:forwards]"
-          style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #c026d3 50%, #ea580c 100%)' }}
+          style={{ background: 'linear-gradient(135deg, #1e40af 0%, #2563eb 50%, #0ea5e9 100%)' }}
         >
           <span className="font-display text-3xl sm:text-4xl font-bold tracking-tight">HM</span>
         </div>

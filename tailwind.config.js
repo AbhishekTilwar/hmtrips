@@ -12,10 +12,10 @@ export default {
       },
       colors: {
         brand: {
-          purple: '#6b21a8',
-          violet: '#7c3aed',
-          fuchsia: '#c026d3',
-          orange: '#ea580c',
+          blue: '#1e40af',
+          'blue-mid': '#2563eb',
+          sky: '#0ea5e9',
+          cyan: '#06b6d4',
         },
         neutral: {
           950: '#1a1a2e',
@@ -25,9 +25,9 @@ export default {
         },
       },
       backgroundImage: {
-        'gradient-brand': 'linear-gradient(135deg, #7c3aed 0%, #c026d3 50%, #ea580c 100%)',
-        'gradient-brand-hover': 'linear-gradient(135deg, #8b5cf6 0%, #d946ef 50%, #f97316 100%)',
-        'sidebar-card': 'linear-gradient(180deg, #f5f3ff 0%, #ffffff 100%)',
+        'gradient-brand': 'linear-gradient(135deg, #1e40af 0%, #2563eb 50%, #0ea5e9 100%)',
+        'gradient-brand-hover': 'linear-gradient(135deg, #2563eb 0%, #3b82f6 50%, #38bdf8 100%)',
+        'sidebar-card': 'linear-gradient(180deg, #eff6ff 0%, #ffffff 100%)',
         'hero-overlay': 'linear-gradient(180deg, transparent 20%, rgba(26, 26, 46, 0.9) 100%)',
       },
       boxShadow: {
