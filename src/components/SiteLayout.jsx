@@ -13,7 +13,7 @@ export default function SiteLayout() {
   const [loginOpen, setLoginOpen] = useState(false)
 
   return (
-    <div className="min-h-screen min-h-screen-mobile flex flex-col pb-48 md:pb-20 overflow-x-hidden">
+    <div className="min-h-screen min-h-screen-mobile flex flex-col pb-4 md:pb-0 overflow-x-hidden">
       <header
         className={`fixed top-0 left-0 right-0 z-50 w-full bg-white transition-transform duration-300 ease-in-out ${
           headerVisible ? 'translate-y-0' : '-translate-y-full'
@@ -22,7 +22,7 @@ export default function SiteLayout() {
         <TopBar />
         <Navbar onLoginClick={() => setLoginOpen(true)} />
       </header>
-      <main className="flex-1 pt-[108px]">
+      <main className="flex-1 pt-[88px]">
         <Outlet />
       </main>
       <Footer />

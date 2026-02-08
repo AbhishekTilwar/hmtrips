@@ -156,7 +156,7 @@ export default function UpcomingTours() {
         </section>
 
         {/* Results: sidebar + list */}
-        <section id="results" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+        <section id="results" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-16">
           <ScrollReveal>
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Left sidebar - callback card */}

@@ -3,7 +3,8 @@ export default function FloatingPhoneIcon() {
     <div
       className="fixed z-50 flex flex-col gap-2"
       style={{
-        bottom: 'max(8rem, calc(8rem + env(safe-area-inset-bottom, 0px)))',
+        bottom: 0,
+        marginBottom: 'max(0.75rem, env(safe-area-inset-bottom, 0px))',
         right: 'max(1.5rem, env(safe-area-inset-right, 0px))',
       }}
     >
