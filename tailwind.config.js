@@ -37,6 +37,9 @@ export default {
       animation: {
         'fade-in': 'fadeIn 0.6s ease-out forwards',
         'slide-up': 'slideUp 0.5s ease-out forwards',
+        'splash-scale-in': 'splashScaleIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
+        'splash-fade-up': 'splashFadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards',
+        'splash-bar': 'splashBar 2.2s cubic-bezier(0.22, 1, 0.36, 1) forwards',
       },
       keyframes: {
         fadeIn: {
@@ -46,6 +49,18 @@ export default {
         slideUp: {
           '0%': { opacity: '0', transform: 'translateY(24px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        splashScaleIn: {
+          '0%': { opacity: '0', transform: 'scale(0.85)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        splashFadeUp: {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        splashBar: {
+          '0%': { transform: 'scaleX(0)' },
+          '100%': { transform: 'scaleX(1)' },
         },
       },
     },
