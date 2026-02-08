@@ -1,8 +1,11 @@
 export default function FloatingPhoneIcon() {
   return (
     <div
-      className="fixed bottom-32 md:bottom-24 right-4 md:right-6 z-50 flex flex-col gap-2"
-      style={{ marginBottom: 'max(0px, env(safe-area-inset-bottom, 0px))' }}
+      className="fixed z-50 flex flex-col gap-2"
+      style={{
+        bottom: 'max(8rem, calc(8rem + env(safe-area-inset-bottom, 0px)))',
+        right: 'max(1.5rem, env(safe-area-inset-right, 0px))',
+      }}
     >
       <a
         href="tel:+918805795709"

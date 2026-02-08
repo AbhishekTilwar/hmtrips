@@ -58,18 +58,18 @@ export default function TourCard({ tour }) {
             )}
           </div>
 
-          <div className="flex md:flex-col items-center md:items-end justify-between md:justify-center gap-4 md:gap-3 md:pl-6 md:border-l border-neutral-100">
-            <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-medium">
+          <div className="flex md:flex-col items-center md:items-end justify-between md:justify-center gap-4 md:gap-3 md:pl-6 md:border-l border-neutral-100 min-w-0 shrink-0">
+            <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-medium shrink-0">
               • {tour.viewing || 0} Viewing
             </span>
-            <div className="text-right">
+            <div className="text-right min-w-0">
               <p className="text-neutral-500 text-xs uppercase tracking-wider">Starting From</p>
-              <p className="font-display text-xl md:text-2xl font-semibold bg-gradient-to-r from-brand-blue to-brand-sky bg-clip-text text-transparent">
+              <p className="font-display text-xl md:text-2xl font-semibold bg-gradient-to-r from-brand-blue to-brand-sky bg-clip-text text-transparent break-words">
                 ₹{tour.pricePerGuest?.toLocaleString('en-IN')}
               </p>
-              <p className="text-neutral-500 text-xs mt-0.5">Excl. GST Per Person in Double Occupancy</p>
+              <p className="text-neutral-500 text-xs mt-0.5 break-words">Excl. GST Per Person in Double Occupancy</p>
             </div>
-            <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-2 w-full md:w-auto">
+            <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-2 w-full md:w-auto min-w-0">
               <Link
                 to={`/itinerary/${tour.id}`}
                 className="btn-gradient text-sm py-3 px-5 md:py-2.5 min-h-[44px] md:min-h-0 whitespace-nowrap text-center flex items-center justify-center"
