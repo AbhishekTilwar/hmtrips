@@ -1,6 +1,14 @@
 import { useState, useEffect } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import SplashScreen from './components/SplashScreen'
+
+function ScrollToTop() {
+  const { pathname } = useLocation()
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
+  return null
+}
 import SiteLayout from './components/SiteLayout'
 import UpcomingTours from './pages/UpcomingTours'
 import Itinerary from './pages/Itinerary'
@@ -33,6 +41,7 @@ function App() {
 
   return (
     <>
+      <ScrollToTop />
       {!splashRemoved && <SplashScreen visible={splashVisible} />}
       <Routes>
         <Route path="/admin/login" element={<AdminLogin />} />

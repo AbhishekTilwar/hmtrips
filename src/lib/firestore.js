@@ -58,15 +58,34 @@ export async function deleteTour(id) {
 }
 
 // ——— Inquiries (user submits, admin views) ———
-export async function createInquiry({ userId, userEmail, userPhone, userName, tourId, tourName, message }) {
+export async function createInquiry(data) {
+  const {
+    userId,
+    userEmail,
+    userPhone,
+    userName,
+    tourId,
+    tourName,
+    message,
+    numberOfGuests,
+    preferredDate,
+    tripInterest,
+    notes,
+    ...rest
+  } = data
   await addDoc(collection(db, COLLECTIONS.inquiries), {
-    userId: userId || null,
-    userEmail: userEmail || null,
-    userPhone: userPhone || null,
-    userName: userName || null,
-    tourId: tourId || null,
-    tourName: tourName || null,
-    message: message || '',
+    userId: userId ?? null,
+    userEmail: userEmail ?? null,
+    userPhone: userPhone ?? null,
+    userName: userName ?? null,
+    tourId: tourId ?? null,
+    tourName: tourName ?? null,
+    message: message ?? '',
+    numberOfGuests: numberOfGuests ?? null,
+    preferredDate: preferredDate ?? null,
+    tripInterest: tripInterest ?? null,
+    notes: notes ?? null,
+    ...rest,
     createdAt: serverTimestamp(),
   })
 }
