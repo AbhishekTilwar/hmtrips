@@ -30,11 +30,13 @@ export function useTours() {
 }
 
 function normalizeTour(t) {
+  const tripTag = t.tripTag || t.shipName || ''
   return {
     id: t.id,
     name: t.name || '',
     tagline: t.tagline || '',
-    shipName: t.shipName || '',
+    tripTag,
+    shipName: tripTag,
     origin: t.origin || '',
     destination: t.destination || '',
     nights: Number(t.nights) || 0,

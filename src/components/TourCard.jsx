@@ -21,7 +21,7 @@ export default function TourCard({ tour }) {
             className="absolute inset-0 w-full h-full object-cover"
           />
           <div className="absolute top-4 left-4 px-3 py-1.5 rounded-lg bg-brand-blue text-white text-xs font-semibold uppercase tracking-wide">
-            {tour.shipName || tour.tagline}
+            {tour.tripTag || tour.shipName || tour.tagline}
           </div>
         </div>
 

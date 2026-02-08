@@ -20,7 +20,7 @@ const LINKS = [
   { label: 'Agent Login', href: '#' },
   { label: 'Admin', href: '/admin/login', internal: true },
   { label: 'About Us', href: '#' },
-  { label: 'Ports', href: '#' },
+  { label: 'Destinations', href: '#' },
   { label: 'Website T&C', href: '#' },
 ]
 
@@ -118,20 +118,20 @@ export default function Footer() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 py-8 border-y border-neutral-700/50 mb-10">
             <div>
               <h4 className="font-display font-semibold text-white text-sm mb-2">Group Travel Desk (Corporate / Travel Partner)</h4>
-              <p className="text-sm text-neutral-400 mb-1">022-65545206, +91 8805795706</p>
               <p className="text-sm text-neutral-400 mb-1">travelops@hmtours.com</p>
               <p className="text-xs text-neutral-500">Mon–Fri 10 AM to 7 PM · Only for our Travel Partners</p>
             </div>
             <div>
               <h4 className="font-display font-semibold text-white text-sm mb-2">Customer Support</h4>
-              <p className="text-sm text-neutral-400 mb-1">022-68811190</p>
+              <p className="text-sm text-neutral-400 mb-1"><a href="tel:+918805795709" className="hover:text-white transition-colors">+91 8805795709</a></p>
+              <p className="text-sm text-neutral-400 mb-1"><a href="tel:+918278717103" className="hover:text-white transition-colors">+91 8278717103</a></p>
               <p className="text-sm text-neutral-400 mb-1">info@hmtours.com</p>
               <p className="text-xs text-neutral-500">Mon–Fri 9 AM to 8 PM · Sat/Sun & Public Holidays 10 AM to 7 PM</p>
             </div>
             <div>
-              <h4 className="font-display font-semibold text-white text-sm mb-2">Book Now</h4>
-              <p className="text-sm text-neutral-400">+91 8805795706</p>
-              <p className="text-sm text-neutral-400">Contact: Harsha Raut</p>
+              <h4 className="font-display font-semibold text-white text-sm mb-2">Book Now / Contact</h4>
+              <p className="text-sm text-neutral-400 mb-1"><a href="tel:+918805795709" className="hover:text-white transition-colors">+91 8805795709</a></p>
+              <p className="text-sm text-neutral-400"><a href="tel:+918278717103" className="hover:text-white transition-colors">+91 8278717103</a></p>
             </div>
           </div>
 

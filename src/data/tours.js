@@ -3,7 +3,7 @@ export const tours = [
     id: 'a57a0384-8f34-4956-a417-8277d7ca4e83',
     name: 'Mumbai → Goa & Lakshadweep',
     tagline: '5-Night Roundtrip Voyage',
-    shipName: 'EMPRESS',
+    shipName: 'Explorer',
     origin: 'Mumbai',
     destination: 'Goa, Lakshadweep',
     nights: 5,
@@ -16,7 +16,7 @@ export const tours = [
     offers: ['2nd Guest Free', '25% Discount'],
     viewing: 235,
     ports: ['Mumbai', 'Goa', 'Lakshadweep', 'Mumbai'],
-    highlights: ['Goa beaches', 'Lakshadweep islands', 'Sunset sails', 'Gourmet dining'],
+    highlights: ['Goa beaches', 'Lakshadweep islands', 'Scenic routes', 'Gourmet dining'],
     highlightImages: [
       'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80',
       'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=600&q=80',
@@ -24,12 +24,12 @@ export const tours = [
       'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80',
     ],
     itinerary: [
-      { day: 1, port: 'Mumbai', description: 'Embarkation. Sail at 6:00 PM. Welcome dinner and live entertainment.' },
-      { day: 2, port: 'At Sea', description: 'Day at sea. Spa, pools, and activities. Themed dinner night.' },
-      { day: 3, port: 'Goa', description: 'Arrive Goa morning. Shore excursion to beaches and heritage. Overnight in port.' },
+      { day: 1, port: 'Mumbai', description: 'Departure 6:00 PM. Welcome dinner and live entertainment.' },
+      { day: 2, port: 'En route', description: 'Travel day. Relax, spa, pools, and activities. Themed dinner night.' },
+      { day: 3, port: 'Goa', description: 'Arrive Goa morning. Beaches and heritage tours. Overnight stay.' },
       { day: 4, port: 'Lakshadweep', description: 'Island paradise. Snorkelling, kayaking, and beach barbecue.' },
-      { day: 5, port: 'At Sea', description: 'Leisure day. Farewell gala dinner and show.' },
-      { day: 6, port: 'Mumbai', description: 'Disembarkation after breakfast.' },
+      { day: 5, port: 'En route', description: 'Leisure day. Farewell gala dinner and show.' },
+      { day: 6, port: 'Mumbai', description: 'Return after breakfast.' },
     ],
     inclusions: ['Accommodation', 'All meals', 'Entertainment', 'Fitness & pool', 'Port taxes'],
     exclusions: ['Shore excursions', 'Spa', 'Premium beverages'],
@@ -38,7 +38,7 @@ export const tours = [
     id: 'b68b1495-9g45-5067-b528-9388e8db5f94',
     name: 'Mumbai → Goa Express',
     tagline: '3-Night Weekend Getaway',
-    shipName: 'EMPRESS',
+    shipName: 'Weekend Getaway',
     origin: 'Mumbai',
     destination: 'Goa',
     nights: 3,
@@ -69,10 +69,10 @@ export const tours = [
       'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400&q=80',
     ],
     itinerary: [
-      { day: 1, port: 'Mumbai Port', subtitle: 'Welcome Aboard', description: 'Step onboard the Empress and begin your weekend at sea. Settle into your cabin, explore the ship, enjoy dinner, live entertainment, or a quiet drink as you sail out of Mumbai. The weekend officially begins the moment you leave port.' },
-      { day: 2, port: 'Goa Port', subtitle: 'Arrive in Goa at 3:00 PM | Evening & Overnight Stay', description: 'Arrive in Goa by mid-afternoon and step straight into evening mode. With an overnight halt, the night is yours to plan. Head out for sunset views, dinner plans, beach walks, live music, or Goa\'s nightlife. Return to the ship at your own pace and enjoy the comfort of your cabin after a full evening ashore.' },
-      { day: 3, port: 'Goa Port', subtitle: 'Full Day in Goa', description: 'Leisure day in Goa. Beach and city tours, or relax on board. Pool, spa, and entertainment.' },
-      { day: 4, port: 'Mumbai Port', subtitle: 'Disembarkation', description: 'Disembarkation by noon after breakfast.' },
+      { day: 1, port: 'Mumbai', subtitle: 'Welcome', description: 'Depart from Mumbai. Check in, enjoy welcome dinner, live entertainment, and begin your weekend trip.' },
+      { day: 2, port: 'Goa', subtitle: 'Arrive in Goa at 3:00 PM | Evening & Overnight Stay', description: 'Arrive in Goa by mid-afternoon. With an overnight halt, the night is yours—sunset views, dinner, beach walks, live music, or Goa\'s nightlife. Return at your own pace after a full evening.' },
+      { day: 3, port: 'Goa', subtitle: 'Full Day in Goa', description: 'Leisure day in Goa. Beach and city tours, or relax at the resort. Pool, spa, and entertainment.' },
+      { day: 4, port: 'Mumbai', subtitle: 'Return', description: 'Return by noon after breakfast.' },
     ],
     inclusionDetails: [
       'Inclusive of all meals at Food Court & Starlight Restaurant',
@@ -95,8 +95,8 @@ export const tours = [
   {
     id: 'c79c25a6-0h56-6178-c639-a499f9ec6ga5',
     name: '2-Night Mumbai Weekend Getaway',
-    tagline: '2-Night Sea Escape',
-    shipName: 'EMPRESS',
+    tagline: '2-Night Escape',
+    shipName: 'Weekend Escape',
     origin: 'Mumbai',
     destination: 'Mumbai',
     nights: 2,
@@ -109,7 +109,7 @@ export const tours = [
     offers: ['Flat 25% Off'],
     viewing: 142,
     ports: ['Mumbai', 'Mumbai'],
-    highlights: ['No ports', 'Full ship experience', 'Spa & dining', 'Stargazing'],
+    highlights: ['Quick getaway', 'Full trip experience', 'Spa & dining', 'Stargazing'],
     highlightImages: [
       'https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=600&q=80',
       'https://images.unsplash.com/photo-1544161515-4ab6f6aa59b3?w=600&q=80',
@@ -117,9 +117,9 @@ export const tours = [
       'https://images.unsplash.com/photo-1473496169904-7ba300e6cbcb?w=600&q=80',
     ],
     itinerary: [
-      { day: 1, port: 'Mumbai', description: 'Friday 6:00 PM sail. Dinner and show.' },
-      { day: 2, port: 'At Sea', description: 'Full day at sea. All facilities open.' },
-      { day: 3, port: 'Mumbai', description: 'Sunday morning disembarkation.' },
+      { day: 1, port: 'Mumbai', description: 'Friday 6:00 PM departure. Dinner and show.' },
+      { day: 2, port: 'En route', description: 'Full day on trip. All facilities open.' },
+      { day: 3, port: 'Mumbai', description: 'Sunday morning return.' },
     ],
     inclusions: ['Interior/Sea view cabin', 'All meals', 'Entertainment', 'Fitness centre'],
     exclusions: ['Spa', 'Premium dining', 'Beverages'],
@@ -128,7 +128,7 @@ export const tours = [
     id: 'd80d36b7-1i67-7289-d740-b5a0g0fd7hb6',
     name: 'Mumbai → Lakshadweep Explorer',
     tagline: '4-Night Island Hopping',
-    shipName: 'SKY',
+    shipName: 'Explorer',
     origin: 'Mumbai',
     destination: 'Lakshadweep',
     nights: 4,
@@ -148,11 +148,11 @@ export const tours = [
       'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=600&q=80',
     ],
     itinerary: [
-      { day: 1, port: 'Mumbai', description: 'Embarkation. Evening sail.' },
-      { day: 2, port: 'At Sea', description: 'Day at sea with activities.' },
+      { day: 1, port: 'Mumbai', description: 'Departure. Evening travel.' },
+      { day: 2, port: 'En route', description: 'Travel day with activities.' },
       { day: 3, port: 'Kadmat Island', description: 'Snorkelling and beach day.' },
       { day: 4, port: 'Kavaratti', description: 'Capital island visit. Local culture.' },
-      { day: 5, port: 'Mumbai', description: 'Return and disembarkation.' },
+      { day: 5, port: 'Mumbai', description: 'Return.' },
     ],
     inclusions: ['Accommodation', 'All meals', 'Snorkelling gear', 'Port fees'],
     exclusions: ['Optional excursions', 'Spa', 'Premium drinks'],
@@ -161,8 +161,23 @@ export const tours = [
 
 export const getTourById = (id) => tours.find((t) => t.id === id);
 
-// For filters
+// Static filter options (fallback when no tours)
 export const DESTINATIONS = ['Where to?', 'Mumbai', 'Goa', 'Lakshadweep', 'At Sea'];
 export const MONTHS = ['Travel month?', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 export const NIGHTS_OPTIONS = ['Nights?', '2', '3', '4', '5'];
-export const TRIP_NAMES = ['Trip name?', ...tours.map((t) => t.name)];
+
+/** Derive filter options from a tours array (e.g. from Firestore) */
+export function getFilterOptionsFromTours(toursList) {
+  if (!toursList?.length) return { destinations: DESTINATIONS, months: MONTHS, nights: NIGHTS_OPTIONS, tripNames: ['Trip name?'] }
+  const destinations = ['Where to?']
+  const nightsSet = new Set()
+  toursList.forEach((t) => {
+    if (t.origin && !destinations.includes(t.origin)) destinations.push(t.origin)
+    const destParts = (t.destination || '').split(',').map((s) => s.trim()).filter(Boolean)
+    destParts.forEach((d) => { if (d && !destinations.includes(d)) destinations.push(d) })
+    if (t.nights) nightsSet.add(String(t.nights))
+  })
+  const nights = ['Nights?', ...Array.from(nightsSet).sort((a, b) => Number(a) - Number(b))]
+  const tripNames = ['Trip name?', ...toursList.map((t) => t.name).filter(Boolean)]
+  return { destinations, months: MONTHS, nights, tripNames }
+}

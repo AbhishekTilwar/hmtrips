@@ -53,7 +53,7 @@ export default function StickyBottomBar() {
         </button>
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <p className="font-medium text-center lg:text-left text-sm lg:text-base pr-16 sm:pr-0">
-            Talk to <span className="text-pink-200 font-semibold">Harsha Raut</span> for instant help with exclusive deals
+            Talk to our travel experts for instant help with exclusive deals
           </p>
           <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 justify-center lg:justify-end">
             <div className="flex rounded-lg overflow-hidden border border-white/30 bg-white/10 backdrop-blur-sm min-h-[44px] md:min-h-0">

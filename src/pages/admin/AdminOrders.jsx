@@ -24,44 +24,56 @@ export default function AdminOrders() {
     return date.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })
   }
 
-  if (loading) return <p className="text-slate-600">Loading orders…</p>
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-16">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-10 h-10 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin" />
+          <p className="text-slate-600 font-medium">Loading orders…</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold text-slate-900 mb-6">Orders</h1>
-      <div className="bg-white rounded-xl shadow overflow-hidden">
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Orders</h1>
+        <p className="text-slate-600 mt-1 text-sm">Bookings and order status.</p>
+      </div>
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
         {list.length === 0 ? (
-          <p className="p-8 text-slate-500 text-center">No orders yet.</p>
+          <p className="p-12 text-slate-500 text-center">No orders yet.</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-slate-50 border-b border-slate-200">
-                  <th className="text-left py-3 px-4 font-semibold text-slate-900">Date</th>
-                  <th className="text-left py-3 px-4 font-semibold text-slate-900">Trip</th>
-                  <th className="text-left py-3 px-4 font-semibold text-slate-900">Customer</th>
-                  <th className="text-left py-3 px-4 font-semibold text-slate-900">Amount</th>
-                  <th className="text-left py-3 px-4 font-semibold text-slate-900">Guests</th>
-                  <th className="text-left py-3 px-4 font-semibold text-slate-900">Status</th>
+                <tr className="bg-slate-50/80 border-b border-slate-200">
+                  <th className="text-left py-4 px-5 font-semibold text-slate-700 uppercase tracking-wider text-xs">Date</th>
+                  <th className="text-left py-4 px-5 font-semibold text-slate-700 uppercase tracking-wider text-xs">Trip</th>
+                  <th className="text-left py-4 px-5 font-semibold text-slate-700 uppercase tracking-wider text-xs">Customer</th>
+                  <th className="text-left py-4 px-5 font-semibold text-slate-700 uppercase tracking-wider text-xs">Amount</th>
+                  <th className="text-left py-4 px-5 font-semibold text-slate-700 uppercase tracking-wider text-xs">Guests</th>
+                  <th className="text-left py-4 px-5 font-semibold text-slate-700 uppercase tracking-wider text-xs">Status</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-slate-100">
                 {list.map((ord) => (
-                  <tr key={ord.id} className="border-b border-slate-100 hover:bg-slate-50">
-                    <td className="py-3 px-4 text-slate-600 whitespace-nowrap">{formatDate(ord.createdAt)}</td>
-                    <td className="py-3 px-4 font-medium text-slate-900">{ord.tourName}</td>
-                    <td className="py-3 px-4 text-slate-700">
+                  <tr key={ord.id} className="hover:bg-slate-50/50 transition-colors">
+                    <td className="py-4 px-5 text-slate-600 whitespace-nowrap">{formatDate(ord.createdAt)}</td>
+                    <td className="py-4 px-5 font-medium text-slate-900">{ord.tourName}</td>
+                    <td className="py-4 px-5 text-slate-700">
                       {ord.userEmail && <span className="block">{ord.userEmail}</span>}
                       {ord.userPhone && <span className="block">{ord.userPhone}</span>}
                       {!ord.userEmail && !ord.userPhone && '—'}
                     </td>
-                    <td className="py-3 px-4 font-medium text-slate-900">₹{Number(ord.amount).toLocaleString('en-IN')}</td>
-                    <td className="py-3 px-4 text-slate-600">{ord.guests ?? '—'}</td>
-                    <td className="py-3 px-4">
+                    <td className="py-4 px-5 font-medium text-slate-900">₹{Number(ord.amount).toLocaleString('en-IN')}</td>
+                    <td className="py-4 px-5 text-slate-600">{ord.guests ?? '—'}</td>
+                    <td className="py-4 px-5">
                       <select
                         value={ord.status}
                         onChange={(e) => handleStatusChange(ord.id, e.target.value)}
-                        className="rounded border border-slate-300 text-sm py-1 px-2"
+                        className="rounded-lg border border-slate-300 text-sm py-1.5 px-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                       >
                         <option value="pending">Pending</option>
                         <option value="confirmed">Confirmed</option>

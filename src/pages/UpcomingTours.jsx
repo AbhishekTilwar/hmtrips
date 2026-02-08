@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react'
-import { tours as staticTours, DESTINATIONS, MONTHS, NIGHTS_OPTIONS } from '../data/tours'
+import { tours as staticTours, getFilterOptionsFromTours } from '../data/tours'
 import { useTours } from '../data/toursData'
 import TourCard from '../components/TourCard'
 import CallbackCard from '../components/CallbackCard'
@@ -8,16 +8,24 @@ import PromoBanner from '../components/PromoBanner'
 import ScrollReveal from '../components/ScrollReveal'
 
 export default function UpcomingTours() {
-  const [destination, setDestination] = useState(DESTINATIONS[0])
-  const [month, setMonth] = useState(MONTHS[0])
-  const [nights, setNights] = useState(NIGHTS_OPTIONS[0])
   const { tours: toursFromFirestore, loading: toursLoading } = useTours()
   const tours = toursFromFirestore.length > 0 ? toursFromFirestore : staticTours
-  const TRIP_NAMES = ['Trip name?', ...tours.map((t) => t.name)]
+  const filterOptions = useMemo(() => getFilterOptionsFromTours(tours), [tours])
+  const [destination, setDestination] = useState(filterOptions.destinations[0])
+  const [month, setMonth] = useState(filterOptions.months[0])
+  const [nights, setNights] = useState(filterOptions.nights[0])
   const [tripName, setTripName] = useState('Trip name?')
   const [sortBy, setSortBy] = useState('date')
   const [filterOpen, setFilterOpen] = useState(false)
   const [showGuidanceModal, setShowGuidanceModal] = useState(false)
+
+  // Keep filter dropdowns in sync when tours load (e.g. from admin)
+  useEffect(() => {
+    setDestination((d) => (filterOptions.destinations.includes(d) ? d : filterOptions.destinations[0]))
+    setMonth((m) => (filterOptions.months.includes(m) ? m : filterOptions.months[0]))
+    setNights((n) => (filterOptions.nights.includes(n) ? n : filterOptions.nights[0]))
+    setTripName((t) => (filterOptions.tripNames.includes(t) ? t : 'Trip name?'))
+  }, [filterOptions.destinations, filterOptions.months, filterOptions.nights, filterOptions.tripNames])
 
   useEffect(() => {
     try {
@@ -34,12 +42,12 @@ export default function UpcomingTours() {
     }
     if (destination && destination !== 'Where to?') {
       list = list.filter((t) =>
-        t.destination.toLowerCase().includes(destination.toLowerCase()) ||
-        t.origin.toLowerCase().includes(destination.toLowerCase())
+        (t.destination || '').toLowerCase().includes(destination.toLowerCase()) ||
+        (t.origin || '').toLowerCase().includes(destination.toLowerCase())
       )
     }
     if (month && month !== 'Travel month?') {
-      const monthNum = MONTHS.indexOf(month)
+      const monthNum = filterOptions.months.indexOf(month)
       if (monthNum > 0) {
         list = list.filter((t) => new Date(t.departureDate).getMonth() === monthNum - 1)
       }
@@ -51,12 +59,12 @@ export default function UpcomingTours() {
     if (sortBy === 'date') {
       list.sort((a, b) => new Date(a.departureDate) - new Date(b.departureDate))
     } else if (sortBy === 'price') {
-      list.sort((a, b) => a.pricePerGuest - b.pricePerGuest)
+      list.sort((a, b) => (a.pricePerGuest || 0) - (b.pricePerGuest || 0))
     } else if (sortBy === 'nights') {
-      list.sort((a, b) => b.nights - a.nights)
+      list.sort((a, b) => (b.nights || 0) - (a.nights || 0))
     }
     return list
-  }, [destination, month, nights, tripName, sortBy])
+  }, [tours, destination, month, nights, tripName, sortBy, filterOptions.months])
 
   const applyFilters = () => {
     // State is already applied; scroll to results
@@ -66,9 +74,9 @@ export default function UpcomingTours() {
   return (
     <>
       <GuidanceModal open={showGuidanceModal} onClose={() => setShowGuidanceModal(false)} />
-      <div className="bg-white min-h-screen">
+      <div className="bg-white min-h-screen min-h-screen-mobile">
         {/* Hero search - Explore Trips & Holidays */}
-        <section className="relative min-h-[320px] sm:min-h-[360px] flex items-center pt-12 pb-8 overflow-hidden">
+        <section className="relative min-h-[260px] sm:min-h-[360px] flex items-start sm:items-center pt-6 sm:pt-12 pb-8 overflow-hidden">
           {/* Background image */}
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -81,7 +89,7 @@ export default function UpcomingTours() {
           <div className="absolute inset-0 bg-white/80" aria-hidden />
           <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal>
-            <h1 className="font-display text-3xl md:text-4xl font-bold text-neutral-950 text-center mb-10">
+            <h1 className="font-display text-3xl md:text-4xl font-bold text-neutral-950 text-center mb-6 sm:mb-10">
               Explore Trips & Holidays
             </h1>
           </ScrollReveal>
@@ -95,7 +103,7 @@ export default function UpcomingTours() {
                   onChange={(e) => setDestination(e.target.value)}
                   className="w-full rounded-lg border border-neutral-300 bg-white px-4 py-3 min-h-[44px] md:min-h-0 text-neutral-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                 >
-                  {DESTINATIONS.map((d) => (
+                  {filterOptions.destinations.map((d) => (
                     <option key={d} value={d}>{d}</option>
                   ))}
                 </select>
@@ -107,7 +115,7 @@ export default function UpcomingTours() {
                   onChange={(e) => setMonth(e.target.value)}
                   className="w-full rounded-lg border border-neutral-300 bg-white px-4 py-3 min-h-[44px] md:min-h-0 text-neutral-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                 >
-                  {MONTHS.map((m) => (
+                  {filterOptions.months.map((m) => (
                     <option key={m} value={m}>{m}</option>
                   ))}
                 </select>
@@ -119,7 +127,7 @@ export default function UpcomingTours() {
                   onChange={(e) => setNights(e.target.value)}
                   className="w-full rounded-lg border border-neutral-300 bg-white px-4 py-3 min-h-[44px] md:min-h-0 text-neutral-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                 >
-                  {NIGHTS_OPTIONS.map((n) => (
+                  {filterOptions.nights.map((n) => (
                     <option key={n} value={n}>{n}</option>
                   ))}
                 </select>
@@ -131,7 +139,7 @@ export default function UpcomingTours() {
                   onChange={(e) => setTripName(e.target.value)}
                   className="w-full rounded-lg border border-neutral-300 bg-white px-4 py-3 min-h-[44px] md:min-h-0 text-neutral-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                 >
-                  {TRIP_NAMES.map((c) => (
+                  {filterOptions.tripNames.map((c) => (
                     <option key={c} value={c}>{c}</option>
                   ))}
                 </select>

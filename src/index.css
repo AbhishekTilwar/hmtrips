@@ -11,6 +11,14 @@
   }
 }
 
+/* Mobile viewport: use 100dvh so content fills visible area (avoids white gap from 100vh) */
+@layer utilities {
+  .min-h-screen-mobile {
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+}
+
 /* Smooth transitions for interactive elements */
 a, button {
   @apply transition-colors duration-200 ease-out;

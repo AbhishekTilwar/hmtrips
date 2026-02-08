@@ -64,7 +64,7 @@ function BookSection({ tour, formatPrice }) {
     <section id="book" className="py-12 md:py-20 bg-white">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="font-display text-2xl md:text-3xl font-semibold text-neutral-950 mb-4 text-center">
-          Ready to Sail?
+          Ready to Book?
         </h2>
         <p className="text-neutral-700 text-sm md:text-base mb-8 max-w-xl mx-auto text-center">
           Secure your spot for {tour.name}. From {formatPrice(tour.pricePerGuest)} per guest.
@@ -199,7 +199,7 @@ export default function Itinerary() {
                 <span className="text-pink-600 font-medium">Disembarkation: {tour.endDate ? formatDateShort(tour.endDate) : '—'}</span>
               </p>
               <p className="text-sm text-neutral-600">
-                Visiting Ports: {tour.ports?.join(' | ') || `${tour.origin} | ${tour.destination}`}
+                Route: {tour.ports?.join(' | ') || `${tour.origin} | ${tour.destination}`}
               </p>
             </div>
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
