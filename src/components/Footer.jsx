@@ -123,14 +123,14 @@ export default function Footer() {
             </div>
             <div>
               <h4 className="font-display font-semibold text-white text-sm mb-2">Customer Support</h4>
-              <p className="text-sm text-neutral-400 mb-1"><a href="tel:+918805795709" className="hover:text-white transition-colors">+91 8805795709</a></p>
+              <p className="text-sm text-neutral-400 mb-1"><a href="tel:+918805795706" className="hover:text-white transition-colors">+91 8805795706</a></p>
               <p className="text-sm text-neutral-400 mb-1"><a href="tel:+918278717103" className="hover:text-white transition-colors">+91 8278717103</a></p>
               <p className="text-sm text-neutral-400 mb-1">info@hmtours.com</p>
               <p className="text-xs text-neutral-500">Mon–Fri 9 AM to 8 PM · Sat/Sun & Public Holidays 10 AM to 7 PM</p>
             </div>
             <div>
               <h4 className="font-display font-semibold text-white text-sm mb-2">Book Now / Contact</h4>
-              <p className="text-sm text-neutral-400 mb-1"><a href="tel:+918805795709" className="hover:text-white transition-colors">+91 8805795709</a></p>
+              <p className="text-sm text-neutral-400 mb-1"><a href="tel:+918805795706" className="hover:text-white transition-colors">+91 8805795706</a></p>
               <p className="text-sm text-neutral-400"><a href="tel:+918278717103" className="hover:text-white transition-colors">+91 8278717103</a></p>
             </div>
           </div>

@@ -51,8 +51,8 @@ export default function CallbackCard() {
         </button>
       )}
       <div className="flex flex-col sm:flex-row gap-2">
-        <a href="tel:+918805795709" className="btn-outline-purple w-full justify-center text-sm py-3 md:py-2.5 min-h-[44px] md:min-h-0 flex items-center">
-          Call +91 8805795709
+        <a href="tel:+918805795706" className="btn-outline-purple w-full justify-center text-sm py-3 md:py-2.5 min-h-[44px] md:min-h-0 flex items-center">
+          Call +91 8805795706
         </a>
         <a href="tel:+918278717103" className="btn-outline-purple w-full justify-center text-sm py-3 md:py-2.5 min-h-[44px] md:min-h-0 flex items-center">
           Call +91 8278717103

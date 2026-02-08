@@ -74,7 +74,7 @@ export default function UpcomingTours() {
   return (
     <>
       <GuidanceModal open={showGuidanceModal} onClose={() => setShowGuidanceModal(false)} />
-      <div className="bg-white min-h-screen min-h-screen-mobile">
+      <div className="bg-white min-h-screen min-h-screen-mobile overflow-x-hidden">
         {/* Hero search - Explore Trips & Holidays */}
         <section className="relative min-h-[260px] sm:min-h-[360px] flex items-start sm:items-center pt-6 sm:pt-12 pb-8 overflow-hidden">
           {/* Background image */}
@@ -156,9 +156,9 @@ export default function UpcomingTours() {
         </section>
 
         {/* Results: sidebar + list */}
-        <section id="results" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-16">
+        <section id="results" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-16 overflow-x-hidden">
           <ScrollReveal>
-          <div className="flex flex-col lg:flex-row gap-8">
+          <div className="flex flex-col lg:flex-row gap-8 min-w-0">
             {/* Left sidebar - callback card */}
             <aside className="lg:w-72 shrink-0 order-2 lg:order-1">
               <div className="lg:sticky lg:top-24">
@@ -206,7 +206,7 @@ export default function UpcomingTours() {
                   <p className="mt-2 text-sm">Try changing destination, month or trip name.</p>
                 </div>
               ) : (
-                <div className="space-y-6">
+                <div className="space-y-6 min-w-0">
                   {filteredTours.map((tour, index) => (
                     <div key={tour.id}>
                       <TourCard tour={tour} />

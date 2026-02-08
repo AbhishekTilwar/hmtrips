@@ -12,9 +12,9 @@ export default function TourCard({ tour }) {
 
   return (
     <article className="rounded-2xl border border-neutral-200 bg-white shadow-card overflow-hidden transition-all duration-300 hover:shadow-card-hover">
-      <div className="flex flex-col md:flex-row">
+      <div className="flex flex-col md:flex-row min-w-0">
         {/* Image - left half */}
-        <div className="md:w-2/5 relative aspect-[4/3] md:aspect-auto md:min-h-[240px]">
+        <div className="md:w-2/5 min-w-0 relative aspect-[4/3] md:aspect-auto md:min-h-[240px] overflow-hidden">
           <img
             src={tour.image}
             alt={tour.name}
@@ -26,8 +26,8 @@ export default function TourCard({ tour }) {
         </div>
 
         {/* Content - right half */}
-        <div className="md:w-3/5 p-4 md:p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div className="flex-1 min-w-0">
+        <div className="md:w-3/5 p-4 md:p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 min-w-0 overflow-hidden">
+          <div className="flex-1 min-w-0 overflow-hidden">
             <h3 className="font-display text-lg md:text-xl font-semibold text-neutral-950 mb-2">
               {tour.name}
             </h3>
@@ -58,27 +58,27 @@ export default function TourCard({ tour }) {
             )}
           </div>
 
-          <div className="flex md:flex-col items-center md:items-end justify-between md:justify-center gap-4 md:gap-3 md:pl-6 md:border-l border-neutral-100 min-w-0 shrink-0">
-            <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-medium shrink-0">
+          <div className="flex flex-col md:flex-row items-stretch md:items-end justify-between md:justify-center gap-4 md:gap-3 md:pl-6 md:border-l border-neutral-100 min-w-0 w-full">
+            <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-medium shrink-0 w-fit">
               • {tour.viewing || 0} Viewing
             </span>
-            <div className="text-right min-w-0">
+            <div className="text-left md:text-right min-w-0">
               <p className="text-neutral-500 text-xs uppercase tracking-wider">Starting From</p>
               <p className="font-display text-xl md:text-2xl font-semibold bg-gradient-to-r from-brand-blue to-brand-sky bg-clip-text text-transparent break-words">
                 ₹{tour.pricePerGuest?.toLocaleString('en-IN')}
               </p>
               <p className="text-neutral-500 text-xs mt-0.5 break-words">Excl. GST Per Person in Double Occupancy</p>
             </div>
-            <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-2 w-full md:w-auto min-w-0">
+            <div className="flex flex-col sm:flex-row flex-wrap items-stretch gap-2 w-full md:w-auto min-w-0">
               <Link
                 to={`/itinerary/${tour.id}`}
-                className="btn-gradient text-sm py-3 px-5 md:py-2.5 min-h-[44px] md:min-h-0 whitespace-nowrap text-center flex items-center justify-center"
+                className="btn-gradient text-sm py-3 px-4 md:py-2.5 min-h-[44px] md:min-h-0 text-center flex items-center justify-center flex-1 sm:flex-initial min-w-0"
               >
                 View Itinerary
               </Link>
               <Link
                 to={`/itinerary/${tour.id}#book`}
-                className="btn-outline-purple text-sm py-3 px-5 md:py-2.5 min-h-[44px] md:min-h-0 whitespace-nowrap text-center flex items-center justify-center"
+                className="btn-outline-purple text-sm py-3 px-4 md:py-2.5 min-h-[44px] md:min-h-0 text-center flex items-center justify-center flex-1 sm:flex-initial min-w-0"
               >
                 Book Now
               </Link>

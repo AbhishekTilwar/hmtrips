@@ -9,7 +9,7 @@ export default function FloatingPhoneIcon() {
       }}
     >
       <a
-        href="tel:+918805795709"
+        href="tel:+918805795706"
         className="flex h-14 w-14 min-touch items-center justify-center rounded-full text-white shadow-lg transition-opacity hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600 shrink-0"
         style={{ background: 'linear-gradient(135deg, #1e40af 0%, #2563eb 50%, #0ea5e9 100%)' }}
         aria-label="Call travel expert"
@@ -19,7 +19,7 @@ export default function FloatingPhoneIcon() {
         </svg>
       </a>
       <a
-        href="https://wa.me/918805795709"
+        href="https://wa.me/918805795706"
         target="_blank"
         rel="noopener noreferrer"
         className="flex h-14 w-14 min-touch items-center justify-center rounded-full text-white shadow-lg transition-opacity hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-green-500 shrink-0"
