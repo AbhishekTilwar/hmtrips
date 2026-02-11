@@ -1,25 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { getToursFromFirestore, createTour, updateTour, deleteTour } from '../../lib/firestore'
-
-// Dummy images admins can pick from, or they can enter their own URL
-const DUMMY_MAIN_IMAGES = [
-  { label: 'Beach sunset', url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80' },
-  { label: 'Ocean voyage', url: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80' },
-  { label: 'Tropical island', url: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80' },
-  { label: 'Cruise ship', url: 'https://images.unsplash.com/photo-1567894340315-735d7c361db0?w=800&q=80' },
-  { label: 'Coastal view', url: 'https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800&q=80' },
-  { label: 'Sunset sea', url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80' },
-]
-const DUMMY_HIGHLIGHT_IMAGES = [
-  'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80',
-  'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&q=80',
-  'https://images.unsplash.com/photo-1536935338788-423bbd3fd26e?w=600&q=80',
-  'https://images.unsplash.com/photo-1571266028243-d220e8d2d7e2?w=600&q=80',
-  'https://images.unsplash.com/photo-1506157786151-b8491531f063?w=600&q=80',
-  'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=600&q=80',
-  'https://images.unsplash.com/photo-1473496169904-7ba300e6cbcb?w=600&q=80',
-  'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80',
-]
+import { uploadTripImage } from '../../lib/storage'
 
 const defaultTrip = {
   name: '',
@@ -85,9 +66,57 @@ function parseList(val) {
 
 function TripForm({ trip, onSave, onCancel, saving, onFillSample }) {
   const [form, setForm] = useState(trip || defaultTrip)
+  const [uploadingMain, setUploadingMain] = useState(false)
+  const [uploadingHighlights, setUploadingHighlights] = useState(false)
+  const mainInputRef = useRef(null)
+  const highlightsInputRef = useRef(null)
+
+  const storagePrefix = trip?.id ? trip.id : `new-${Date.now()}`
 
   const update = (key, value) => setForm((f) => ({ ...f, [key]: value }))
   const updateList = (key, str) => update(key, parseList(str))
+
+  const handleMainImageUpload = async (e) => {
+    const file = e.target.files?.[0]
+    if (!file?.type.startsWith('image/')) return
+    setUploadingMain(true)
+    try {
+      const ext = file.name.split('.').pop()?.toLowerCase() || 'jpg'
+      const url = await uploadTripImage(file, `${storagePrefix}/main.${ext}`)
+      update('image', url)
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setUploadingMain(false)
+      if (mainInputRef.current) mainInputRef.current.value = ''
+    }
+  }
+
+  const handleHighlightImagesUpload = async (e) => {
+    const files = [...(e.target.files || [])].filter((f) => f.type.startsWith('image/'))
+    if (files.length === 0) return
+    setUploadingHighlights(true)
+    try {
+      const current = Array.isArray(form.highlightImages) ? form.highlightImages : []
+      const urls = await Promise.all(
+        files.map((file, i) => {
+          const ext = file.name.split('.').pop()?.toLowerCase() || 'jpg'
+          return uploadTripImage(file, `${storagePrefix}/highlight_${Date.now()}_${i}.${ext}`)
+        })
+      )
+      update('highlightImages', [...current, ...urls])
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setUploadingHighlights(false)
+      if (highlightsInputRef.current) highlightsInputRef.current.value = ''
+    }
+  }
+
+  const removeHighlightImage = (index) => {
+    const current = Array.isArray(form.highlightImages) ? form.highlightImages : []
+    update('highlightImages', current.filter((_, i) => i !== index))
+  }
   const updateItinerary = (index, field, value) => {
     setForm((f) => {
       const it = [...(f.itinerary || [])]
@@ -129,8 +158,12 @@ function TripForm({ trip, onSave, onCancel, saving, onFillSample }) {
     onSave(payload)
   }
 
+  const inputCls = 'w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-shadow'
+  const labelCls = 'block text-sm font-medium text-slate-700 mb-1'
+  const hintCls = 'text-xs text-slate-500 mt-0.5'
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-8 max-w-4xl">
+    <form onSubmit={handleSubmit} className="space-y-10 max-w-4xl">
       {onFillSample && (
         <div className="flex flex-wrap items-center gap-4 p-5 bg-amber-50/80 border border-amber-200/80 rounded-xl shadow-sm">
           <p className="text-sm text-amber-800 flex-1 min-w-0">
@@ -145,238 +178,288 @@ function TripForm({ trip, onSave, onCancel, saving, onFillSample }) {
           </button>
         </div>
       )}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <div className="md:col-span-2">
-          <label className="block text-sm font-semibold text-slate-700 mb-1.5">Trip name *</label>
-          <input
-            type="text"
-            value={form.name}
-            onChange={(e) => update('name', e.target.value)}
-            className="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-shadow"
-            required
-          />
+
+      {/* ——— Basics ——— */}
+      <section className="space-y-5">
+        <h3 className="text-base font-semibold text-slate-800 border-b border-slate-200 pb-2">Trip basics</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="md:col-span-2">
+            <label className={labelCls}>Trip name *</label>
+            <input
+              type="text"
+              value={form.name}
+              onChange={(e) => update('name', e.target.value)}
+              className={inputCls}
+              placeholder="e.g. Mumbai → Goa Express"
+              required
+            />
+            <p className={hintCls}>Shown as the main title on the tour card.</p>
+          </div>
+          <div>
+            <label className={labelCls}>Tagline</label>
+            <input
+              type="text"
+              value={form.tagline}
+              onChange={(e) => update('tagline', e.target.value)}
+              className={inputCls}
+              placeholder="e.g. 3-Night Weekend Getaway"
+            />
+          </div>
+          <div>
+            <label className={labelCls}>Package tag</label>
+            <input
+              type="text"
+              value={form.tripTag ?? form.shipName ?? ''}
+              onChange={(e) => update('tripTag', e.target.value)}
+              placeholder="e.g. Weekend Getaway, Explorer"
+              className={inputCls}
+            />
+          </div>
+          <div>
+            <label className={labelCls}>Origin</label>
+            <input
+              type="text"
+              value={form.origin}
+              onChange={(e) => update('origin', e.target.value)}
+              className={inputCls}
+              placeholder="e.g. Mumbai"
+            />
+          </div>
+          <div>
+            <label className={labelCls}>Destination</label>
+            <input
+              type="text"
+              value={form.destination}
+              onChange={(e) => update('destination', e.target.value)}
+              className={inputCls}
+              placeholder="e.g. Goa"
+            />
+          </div>
+          <div>
+            <label className={labelCls}>Number of nights *</label>
+            <input
+              type="number"
+              min={1}
+              value={form.nights}
+              onChange={(e) => update('nights', e.target.value)}
+              className={inputCls}
+              placeholder="e.g. 3"
+            />
+          </div>
         </div>
+      </section>
+
+      {/* ——— Dates & price ——— */}
+      <section className="space-y-5">
+        <h3 className="text-base font-semibold text-slate-800 border-b border-slate-200 pb-2">Dates & price</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div>
+            <label className={labelCls}>Departure date *</label>
+            <input
+              type="date"
+              value={form.departureDate}
+              onChange={(e) => update('departureDate', e.target.value)}
+              className={inputCls}
+              required
+            />
+          </div>
+          <div>
+            <label className={labelCls}>End date</label>
+            <input
+              type="date"
+              value={form.endDate}
+              onChange={(e) => update('endDate', e.target.value)}
+              className={inputCls}
+            />
+          </div>
+          <div>
+            <label className={labelCls}>Price per guest (₹)</label>
+            <input
+              type="number"
+              min={0}
+              value={form.pricePerGuest || ''}
+              onChange={(e) => update('pricePerGuest', e.target.value)}
+              className={inputCls}
+              placeholder="e.g. 14999"
+            />
+          </div>
+          <div>
+            <label className={labelCls}>Price per night (₹)</label>
+            <input
+              type="number"
+              min={0}
+              value={form.pricePerNight || ''}
+              onChange={(e) => update('pricePerNight', e.target.value)}
+              className={inputCls}
+              placeholder="Optional"
+            />
+          </div>
+          <div>
+            <label className={labelCls}>Offer</label>
+            <input
+              type="text"
+              value={form.offer}
+              onChange={(e) => update('offer', e.target.value)}
+              className={inputCls}
+              placeholder="e.g. Flat 10% Off"
+            />
+          </div>
+          <div>
+            <label className={labelCls}>Other offers (comma-separated)</label>
+            <input
+              type="text"
+              value={Array.isArray(form.offers) ? form.offers.join(', ') : form.offers}
+              onChange={(e) => updateList('offers', e.target.value)}
+              className={inputCls}
+              placeholder="e.g. 2nd Guest Free, 25% Discount"
+            />
+          </div>
+          <div>
+            <label className={labelCls}>Viewing count</label>
+            <input
+              type="number"
+              min={0}
+              value={form.viewing || ''}
+              onChange={(e) => update('viewing', e.target.value)}
+              className={inputCls}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* ——— Cover image (Storage upload) ——— */}
+      <section className="space-y-5">
+        <h3 className="text-base font-semibold text-slate-800 border-b border-slate-200 pb-2">Cover image</h3>
+        <p className="text-sm text-slate-600">Upload an image (auto-compressed to ~200 KB).</p>
+        <div className="flex flex-wrap items-start gap-4">
+          <label className="inline-flex items-center gap-2 px-4 py-2.5 bg-indigo-50 text-indigo-700 rounded-lg border border-indigo-200 cursor-pointer hover:bg-indigo-100 transition-colors font-medium text-sm">
+            <input
+              ref={mainInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleMainImageUpload}
+              className="sr-only"
+              disabled={uploadingMain}
+            />
+            {uploadingMain ? (
+              <>
+                <span className="w-4 h-4 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin" />
+                Uploading…
+              </>
+            ) : (
+              <>Upload image</>
+            )}
+          </label>
+        </div>
+        {form.image && (
+          <div className="relative w-full max-w-xs aspect-[4/3] rounded-lg overflow-hidden border border-slate-200">
+            <img src={form.image} alt="Cover" className="w-full h-full object-cover" />
+          </div>
+        )}
+      </section>
+
+      {/* ——— Route & highlights ——— */}
+      <section className="space-y-5">
+        <h3 className="text-base font-semibold text-slate-800 border-b border-slate-200 pb-2">Route & highlights</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="md:col-span-2">
+            <label className={labelCls}>Stops / route</label>
+            <input
+              type="text"
+              value={Array.isArray(form.ports) ? form.ports.join(', ') : form.ports}
+              onChange={(e) => updateList('ports', e.target.value)}
+              className={inputCls}
+              placeholder="e.g. Mumbai, Goa, Lakshadweep, Mumbai"
+            />
+          </div>
+          <div className="md:col-span-2">
+            <label className={labelCls}>Highlights (comma-separated)</label>
+            <input
+              type="text"
+              value={Array.isArray(form.highlights) ? form.highlights.join(', ') : form.highlights}
+              onChange={(e) => updateList('highlights', e.target.value)}
+              className={inputCls}
+              placeholder="e.g. Goa beaches, Sunset sails, Live music"
+            />
+          </div>
+        </div>
+
+        {/* Multiple highlight images — upload to Storage */}
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Tagline</label>
-          <input
-            type="text"
-            value={form.tagline}
-            onChange={(e) => update('tagline', e.target.value)}
-            className="w-full px-4 py-2 rounded-lg border border-slate-300"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Trip / Package tag</label>
-          <input
-            type="text"
-            value={form.tripTag ?? form.shipName ?? ''}
-            onChange={(e) => update('tripTag', e.target.value)}
-            placeholder="e.g. Weekend Getaway, Explorer"
-            className="w-full px-4 py-2 rounded-lg border border-slate-300"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Origin</label>
-          <input
-            type="text"
-            value={form.origin}
-            onChange={(e) => update('origin', e.target.value)}
-            className="w-full px-4 py-2 rounded-lg border border-slate-300"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Destination</label>
-          <input
-            type="text"
-            value={form.destination}
-            onChange={(e) => update('destination', e.target.value)}
-            className="w-full px-4 py-2 rounded-lg border border-slate-300"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Nights *</label>
-          <input
-            type="number"
-            min={1}
-            value={form.nights}
-            onChange={(e) => update('nights', e.target.value)}
-            className="w-full px-4 py-2 rounded-lg border border-slate-300"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Departure date *</label>
-          <input
-            type="date"
-            value={form.departureDate}
-            onChange={(e) => update('departureDate', e.target.value)}
-            className="w-full px-4 py-2 rounded-lg border border-slate-300"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">End date</label>
-          <input
-            type="date"
-            value={form.endDate}
-            onChange={(e) => update('endDate', e.target.value)}
-            className="w-full px-4 py-2 rounded-lg border border-slate-300"
-          />
-        </div>
-        <div className="md:col-span-2">
-          <label className="block text-sm font-medium text-slate-700 mb-2">Main cover image</label>
-          <p className="text-xs text-slate-500 mb-2">Pick a preset or enter your own URL below.</p>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 mb-3">
-            {DUMMY_MAIN_IMAGES.map((img) => (
-              <button
-                key={img.url}
-                type="button"
-                onClick={() => update('image', img.url)}
-                className={`relative rounded-lg overflow-hidden border-2 transition-all aspect-[4/3] ${
-                  form.image === img.url ? 'border-indigo-600 ring-2 ring-indigo-200' : 'border-slate-200 hover:border-slate-400'
-                }`}
-              >
-                <img src={img.url} alt={img.label} className="w-full h-full object-cover" />
-                <span className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-[10px] px-1 py-0.5 truncate">{img.label}</span>
-              </button>
+          <label className={labelCls}>Highlight images (gallery)</label>
+          <p className="text-xs text-slate-500 mb-2">Add multiple images. They are compressed to ~200 KB each and stored in your bucket.</p>
+          <div className="flex flex-wrap items-center gap-3 mb-3">
+            <label className="inline-flex items-center gap-2 px-4 py-2.5 bg-indigo-50 text-indigo-700 rounded-lg border border-indigo-200 cursor-pointer hover:bg-indigo-100 transition-colors font-medium text-sm">
+              <input
+                ref={highlightsInputRef}
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleHighlightImagesUpload}
+                className="sr-only"
+                disabled={uploadingHighlights}
+              />
+              {uploadingHighlights ? (
+                <>
+                  <span className="w-4 h-4 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin" />
+                  Uploading…
+                </>
+              ) : (
+                <>Add images</>
+              )}
+            </label>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {(Array.isArray(form.highlightImages) ? form.highlightImages : []).map((url, index) => (
+              <div key={`${url}-${index}`} className="relative group">
+                <div className="w-20 h-20 rounded-lg overflow-hidden border-2 border-slate-200">
+                  <img src={url} alt="" className="w-full h-full object-cover" />
+                </div>
+                <button
+                  type="button"
+                  onClick={() => removeHighlightImage(index)}
+                  className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-red-500 text-white flex items-center justify-center text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity shadow"
+                  aria-label="Remove image"
+                >
+                  ×
+                </button>
+              </div>
             ))}
           </div>
-          <input
-            type="url"
-            value={form.image}
-            onChange={(e) => update('image', e.target.value)}
-            placeholder="Or enter your own image URL"
-            className="w-full px-4 py-2 rounded-lg border border-slate-300 text-sm"
-          />
         </div>
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Price per guest (₹)</label>
-          <input
-            type="number"
-            min={0}
-            value={form.pricePerGuest || ''}
-            onChange={(e) => update('pricePerGuest', e.target.value)}
-            className="w-full px-4 py-2 rounded-lg border border-slate-300"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Price per night (₹)</label>
-          <input
-            type="number"
-            min={0}
-            value={form.pricePerNight || ''}
-            onChange={(e) => update('pricePerNight', e.target.value)}
-            className="w-full px-4 py-2 rounded-lg border border-slate-300"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Offer (e.g. Flat 10% Off)</label>
-          <input
-            type="text"
-            value={form.offer}
-            onChange={(e) => update('offer', e.target.value)}
-            className="w-full px-4 py-2 rounded-lg border border-slate-300"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Offers (comma-separated)</label>
-          <input
-            type="text"
-            value={Array.isArray(form.offers) ? form.offers.join(', ') : form.offers}
-            onChange={(e) => updateList('offers', e.target.value)}
-            placeholder="2nd Guest Free, 25% Discount"
-            className="w-full px-4 py-2 rounded-lg border border-slate-300"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Viewing count</label>
-          <input
-            type="number"
-            min={0}
-            value={form.viewing || ''}
-            onChange={(e) => update('viewing', e.target.value)}
-            className="w-full px-4 py-2 rounded-lg border border-slate-300"
-          />
-        </div>
-        <div className="md:col-span-2">
-          <label className="block text-sm font-medium text-slate-700 mb-1">Stops / Route (comma-separated)</label>
-          <input
-            type="text"
-            value={Array.isArray(form.ports) ? form.ports.join(', ') : form.ports}
-            onChange={(e) => updateList('ports', e.target.value)}
-            placeholder="Mumbai, Goa, Lakshadweep, Mumbai"
-            className="w-full px-4 py-2 rounded-lg border border-slate-300"
-          />
-        </div>
-        <div className="md:col-span-2">
-          <label className="block text-sm font-medium text-slate-700 mb-1">Highlights (comma-separated)</label>
-          <input
-            type="text"
-            value={Array.isArray(form.highlights) ? form.highlights.join(', ') : form.highlights}
-            onChange={(e) => updateList('highlights', e.target.value)}
-            placeholder="Goa beaches, Sunset sails"
-            className="w-full px-4 py-2 rounded-lg border border-slate-300"
-          />
-        </div>
-        <div className="md:col-span-2">
-          <label className="block text-sm font-medium text-slate-700 mb-2">Highlight / gallery images</label>
-          <p className="text-xs text-slate-500 mb-2">Click to add preset images, or enter your own URLs (comma-separated) below.</p>
-          <div className="flex flex-wrap gap-2 mb-3">
-            {DUMMY_HIGHLIGHT_IMAGES.map((url) => {
-              const current = Array.isArray(form.highlightImages) ? form.highlightImages : []
-              const isSelected = current.includes(url)
-              return (
-                <button
-                  key={url}
-                  type="button"
-                  onClick={() => {
-                    if (isSelected) {
-                      update('highlightImages', current.filter((u) => u !== url))
-                    } else {
-                      update('highlightImages', [...current, url])
-                    }
-                  }}
-                  className={`relative w-14 h-14 rounded-lg overflow-hidden border-2 shrink-0 transition-all ${
-                    isSelected ? 'border-indigo-600 ring-2 ring-indigo-200' : 'border-slate-200 hover:border-slate-400'
-                  }`}
-                >
-                  <img src={url} alt="" className="w-full h-full object-cover" />
-                </button>
-              )
-            })}
-          </div>
-          <input
-            type="text"
-            value={Array.isArray(form.highlightImages) ? form.highlightImages.join(', ') : form.highlightImages}
-            onChange={(e) => updateList('highlightImages', e.target.value)}
-            placeholder="Or enter image URLs (comma-separated)"
-            className="w-full px-4 py-2 rounded-lg border border-slate-300 text-sm"
-          />
-        </div>
-        <div className="md:col-span-2">
-          <label className="block text-sm font-medium text-slate-700 mb-1">Inclusions (comma-separated)</label>
-          <input
-            type="text"
-            value={Array.isArray(form.inclusions) ? form.inclusions.join(', ') : form.inclusions}
-            onChange={(e) => updateList('inclusions', e.target.value)}
-            placeholder="Accommodation, All meals"
-            className="w-full px-4 py-2 rounded-lg border border-slate-300"
-          />
-        </div>
-        <div className="md:col-span-2">
-          <label className="block text-sm font-medium text-slate-700 mb-1">Exclusions (comma-separated)</label>
-          <input
-            type="text"
-            value={Array.isArray(form.exclusions) ? form.exclusions.join(', ') : form.exclusions}
-            onChange={(e) => updateList('exclusions', e.target.value)}
-            placeholder="Shore excursions, Spa"
-            className="w-full px-4 py-2 rounded-lg border border-slate-300"
-          />
-        </div>
-      </div>
+      </section>
 
-      <div>
+      {/* ——— Inclusions & exclusions ——— */}
+      <section className="space-y-5">
+        <h3 className="text-base font-semibold text-slate-800 border-b border-slate-200 pb-2">Inclusions & exclusions</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="md:col-span-2">
+            <label className={labelCls}>Included (comma-separated)</label>
+            <input
+              type="text"
+              value={Array.isArray(form.inclusions) ? form.inclusions.join(', ') : form.inclusions}
+              onChange={(e) => updateList('inclusions', e.target.value)}
+              className={inputCls}
+              placeholder="e.g. Cabin accommodation, All meals, Entertainment"
+            />
+          </div>
+          <div className="md:col-span-2">
+            <label className={labelCls}>Not included (comma-separated)</label>
+            <input
+              type="text"
+              value={Array.isArray(form.exclusions) ? form.exclusions.join(', ') : form.exclusions}
+              onChange={(e) => updateList('exclusions', e.target.value)}
+              className={inputCls}
+              placeholder="e.g. Shore excursions, Spa, Alcoholic beverages"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* ——— Itinerary ——— */}
+      <section>
         <div className="flex justify-between items-center mb-2">
-          <label className="block text-sm font-medium text-slate-700">Itinerary (day-wise)</label>
+          <label className="block text-sm font-semibold text-slate-700">Itinerary (day-wise)</label>
           <button type="button" onClick={addItineraryDay} className="text-sm text-blue-600 hover:underline">
             + Add day
           </button>
@@ -412,7 +495,7 @@ function TripForm({ trip, onSave, onCancel, saving, onFillSample }) {
             </div>
           ))}
         </div>
-      </div>
+      </section>
 
       <div className="flex gap-3 pt-2">
         <button

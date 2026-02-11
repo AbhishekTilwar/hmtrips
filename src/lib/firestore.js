@@ -127,13 +127,23 @@ export async function updateOrderStatus(orderId, status) {
 
 // ——— Payments (user pays, admin views) ———
 export async function createPayment({ orderId, userId, amount, status = 'pending', method }) {
-  await addDoc(collection(db, COLLECTIONS.payments), {
+  const docRef = await addDoc(collection(db, COLLECTIONS.payments), {
     orderId,
     userId: userId || null,
     amount: amount || 0,
     status,
-    method: method || 'online',
+    method: method || 'razorpay',
+    razorpayOrderId: null,
+    razorpayPaymentId: null,
     createdAt: serverTimestamp(),
+  })
+  return docRef.id
+}
+
+export async function updatePayment(paymentId, data) {
+  await updateDoc(doc(db, COLLECTIONS.payments, paymentId), {
+    ...data,
+    updatedAt: serverTimestamp(),
   })
 }
 
@@ -141,5 +151,10 @@ export async function getPayments() {
   const snap = await getDocs(
     query(collection(db, COLLECTIONS.payments), orderBy('createdAt', 'desc'))
   )
-  return snap.docs.map((d) => ({ id: d.id, ...d.data(), createdAt: d.data().createdAt?.toDate?.() }))
+  return snap.docs.map((d) => ({
+    id: d.id,
+    ...d.data(),
+    createdAt: d.data().createdAt?.toDate?.(),
+    updatedAt: d.data().updatedAt?.toDate?.(),
+  }))
 }

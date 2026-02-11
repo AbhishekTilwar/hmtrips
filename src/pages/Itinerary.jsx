@@ -3,8 +3,14 @@ import { useParams, Link } from 'react-router-dom'
 import { useTourById } from '../data/toursData'
 import { getTourById } from '../data/tours'
 import { useAuth } from '../contexts/AuthContext'
-import { createOrder, createPayment, createInquiry } from '../lib/firestore'
+import { createOrder, createPayment, updatePayment, updateOrderStatus, createInquiry } from '../lib/firestore'
+import { openRazorpayCheckout } from '../lib/razorpay'
 import ScrollReveal from '../components/ScrollReveal'
+
+// Use relative /api so: production = same-origin on Vercel; local = Vite proxy (set VITE_API_BASE_URL in .env)
+const API_BASE = ''
+// Key ID is public; fallback so payment works even without .env (secret stays on server)
+const RAZORPAY_KEY_ID = import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_live_SEo7lCnNbH00WM'
 
 function BookSection({ tour, formatPrice }) {
   const { user } = useAuth()
@@ -12,12 +18,20 @@ function BookSection({ tour, formatPrice }) {
   const [message, setMessage] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+  const [paymentError, setPaymentError] = useState('')
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setPaymentError('')
     setSubmitting(true)
     try {
       const amount = (tour.pricePerGuest || 0) * guests
+      if (amount < 1) {
+        setPaymentError('Amount must be at least ₹1.')
+        setSubmitting(false)
+        return
+      }
+
       const orderId = await createOrder({
         userId: user?.uid || null,
         userEmail: user?.email || null,
@@ -29,7 +43,84 @@ function BookSection({ tour, formatPrice }) {
         guests,
         status: 'pending',
       })
-      await createPayment({ orderId, userId: user?.uid || null, amount, status: 'pending', method: 'online' })
+
+      const paymentId = await createPayment({
+        orderId,
+        userId: user?.uid || null,
+        amount,
+        status: 'pending',
+        method: 'razorpay',
+      })
+
+      const keyId = RAZORPAY_KEY_ID
+      if (!keyId) {
+        setPaymentError('Payment is not configured. Please contact support.')
+        setSubmitting(false)
+        return
+      }
+
+      const createOrderRes = await fetch(`${API_BASE}/api/razorpay/create-order`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount,
+          receipt: orderId,
+          tourName: tour.name,
+        }),
+      })
+      const createOrderText = await createOrderRes.text()
+      let createOrderData = {}
+      try {
+        createOrderData = createOrderText ? JSON.parse(createOrderText) : {}
+      } catch (_) {
+        createOrderData = {}
+      }
+      if (!createOrderRes.ok) {
+        setPaymentError(createOrderData.error || (createOrderRes.status === 404 ? 'Payment API not found. For local dev, set VITE_API_BASE_URL in .env to your Vercel URL and restart.' : 'Could not create payment.'))
+        setSubmitting(false)
+        return
+      }
+
+      const response = await openRazorpayCheckout({
+        keyId,
+        orderId: createOrderData.orderId,
+        amount: createOrderData.amount,
+        currency: createOrderData.currency || 'INR',
+        name: 'HM Tours',
+        description: `${tour.name} — ${guests} guest(s)`,
+        prefillEmail: user?.email || undefined,
+        prefillContact: user?.phoneNumber || undefined,
+      })
+
+      const verifyRes = await fetch(`${API_BASE}/api/razorpay/verify`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          razorpay_order_id: response.razorpay_order_id,
+          razorpay_payment_id: response.razorpay_payment_id,
+          razorpay_signature: response.razorpay_signature,
+        }),
+      })
+      const verifyText = await verifyRes.text()
+      let verifyData = {}
+      try {
+        verifyData = verifyText ? JSON.parse(verifyText) : {}
+      } catch (_) {
+        verifyData = {}
+      }
+      if (!verifyData.success) {
+        setPaymentError('Payment verification failed. Please contact support with your order details.')
+        setSubmitting(false)
+        return
+      }
+
+      await updatePayment(paymentId, {
+        status: 'completed',
+        razorpayOrderId: response.razorpay_order_id,
+        razorpayPaymentId: response.razorpay_payment_id,
+      })
+      await updateOrderStatus(orderId, 'confirmed')
+
       if (message) {
         await createInquiry({
           userId: user?.uid || null,
@@ -42,8 +133,12 @@ function BookSection({ tour, formatPrice }) {
         })
       }
       setSubmitted(true)
-    } catch (_) {
-      setSubmitted(true)
+    } catch (err) {
+      if (err?.message === 'Payment closed') {
+        setPaymentError('Payment was cancelled.')
+      } else {
+        setPaymentError(err?.message || 'Something went wrong. Please try again.')
+      }
     } finally {
       setSubmitting(false)
     }
@@ -53,8 +148,8 @@ function BookSection({ tour, formatPrice }) {
     return (
       <section id="book" className="py-12 md:py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="font-display text-2xl font-semibold text-neutral-950 mb-2">Booking request sent</h2>
-          <p className="text-neutral-600">We&apos;ll confirm your booking and payment details shortly.</p>
+          <h2 className="font-display text-2xl font-semibold text-neutral-950 mb-2">Booking & payment confirmed</h2>
+          <p className="text-neutral-600">Thank you! We&apos;ll send you the booking details shortly.</p>
         </div>
       </section>
     )
@@ -67,7 +162,7 @@ function BookSection({ tour, formatPrice }) {
           Ready to Book?
         </h2>
         <p className="text-neutral-700 text-sm md:text-base mb-8 max-w-xl mx-auto text-center">
-          Secure your spot for {tour.name}. From {formatPrice(tour.pricePerGuest)} per guest.
+          Secure your spot for {tour.name}. From {formatPrice(tour.pricePerGuest)} per guest. Pay securely with Razorpay.
         </p>
         <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-4">
           <div>
@@ -90,11 +185,14 @@ function BookSection({ tour, formatPrice }) {
               placeholder="Special requests..."
             />
           </div>
-          <p className="text-sm text-neutral-600">
-            Total: ₹{((tour.pricePerGuest || 0) * guests).toLocaleString('en-IN')} (payment will be confirmed by our team)
+          <p className="text-sm text-neutral-600 font-medium">
+            Total: ₹{((tour.pricePerGuest || 0) * guests).toLocaleString('en-IN')}
           </p>
+          {paymentError && (
+            <p className="text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg">{paymentError}</p>
+          )}
           <button type="submit" disabled={submitting} className="btn-gradient w-full py-4 rounded-lg disabled:opacity-50">
-            {submitting ? 'Submitting…' : 'Book Now'}
+            {submitting ? 'Opening payment…' : 'Pay & Book'}
           </button>
         </form>
       </div>
