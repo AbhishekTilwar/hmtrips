@@ -75,26 +75,30 @@ export default function UpcomingTours() {
     <>
       <GuidanceModal open={showGuidanceModal} onClose={() => setShowGuidanceModal(false)} />
       <div className="bg-white min-h-screen min-h-screen-mobile overflow-x-hidden">
-        {/* Hero search - Explore Trips & Holidays */}
-        <section className="relative min-h-[260px] sm:min-h-[360px] flex items-start sm:items-center pt-6 sm:pt-12 pb-8 overflow-hidden">
-          {/* Background image */}
+        {/* Hero search - Explore Trips & Holidays (parallax) */}
+        <section className="relative min-h-[280px] sm:min-h-[400px] flex items-start sm:items-center pt-8 sm:pt-14 pb-10 overflow-hidden">
+          {/* Parallax background */}
           <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat parallax-bg transition-transform duration-100"
             style={{
               backgroundImage: `url(https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600&q=80)`,
+              backgroundAttachment: 'fixed',
             }}
             aria-hidden
           />
-          {/* Overlay for legibility */}
-          <div className="absolute inset-0 bg-white/80" aria-hidden />
+          {/* Gradient overlay for legibility + depth */}
+          <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/85 to-white/95" aria-hidden />
           <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <ScrollReveal>
-            <h1 className="font-display text-3xl md:text-4xl font-bold text-neutral-950 text-center mb-6 sm:mb-10">
+          <ScrollReveal variant="fade" duration={700}>
+            <h1 className="font-display text-3xl md:text-5xl font-bold text-neutral-950 text-center mb-2 drop-shadow-sm">
               Explore Trips & Holidays
             </h1>
+            <p className="text-neutral-600 text-center text-sm sm:text-base mb-6 sm:mb-8 max-w-xl mx-auto">
+              Find your next adventure — from tropical shores to winter wonderlands
+            </p>
           </ScrollReveal>
-          <ScrollReveal delay={100}>
-          <div className="bg-white rounded-2xl border-2 border-neutral-200 shadow-card p-4 md:p-6 transition-shadow duration-300 hover:shadow-card-hover">
+          <ScrollReveal variant="scaleIn" staggerIndex={1} duration={600}>
+          <div className="bg-white/95 backdrop-blur-sm rounded-2xl border-2 border-neutral-200/80 shadow-xl p-4 md:p-6 transition-all duration-300 hover:shadow-2xl hover:border-neutral-300/80">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-wrap items-end gap-4">
               <div className="w-full sm:min-w-0 lg:flex-1 lg:min-w-[140px]">
                 <label className="block text-sm font-medium text-neutral-700 mb-1">Select Destination</label>
@@ -157,7 +161,7 @@ export default function UpcomingTours() {
 
         {/* Results: sidebar + list */}
         <section id="results" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-16 overflow-x-hidden">
-          <ScrollReveal>
+          <ScrollReveal variant="slideUp" duration={600}>
           <div className="flex flex-col lg:flex-row gap-8 min-w-0">
             {/* Left sidebar - callback card */}
             <aside className="lg:w-72 shrink-0 order-2 lg:order-1">
@@ -168,23 +172,17 @@ export default function UpcomingTours() {
 
             {/* Main - Trip Search Results */}
             <div className="flex-1 min-w-0 order-1 lg:order-2">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-                <h2 className="font-display text-xl md:text-2xl font-semibold text-neutral-950">
-                  Trip Search Results ({filteredTours.length})
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5 p-4 rounded-xl bg-neutral-50/80 border border-neutral-100">
+                <h2 className="font-display text-lg md:text-xl font-semibold text-neutral-900">
+                  Trip Search Results
+                  <span className="ml-2 font-body font-medium text-neutral-500">({filteredTours.length})</span>
                 </h2>
-                <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setFilterOpen((f) => !f)}
-                    className="flex items-center gap-2 px-4 py-3 md:py-2 min-h-[44px] md:min-h-0 rounded-lg border border-neutral-300 text-neutral-700 font-medium hover:bg-neutral-50 transition-colors"
-                  >
-                    <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" /></svg>
-                    Sort By
-                  </button>
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-neutral-500 text-sm hidden sm:inline">Sort:</span>
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="rounded-lg border border-neutral-300 bg-white px-4 py-3 md:py-2 min-h-[44px] md:min-h-0 text-neutral-700 font-medium focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    className="rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-700 font-medium focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                   >
                     <option value="date">Departure Date</option>
                     <option value="price">Price (Low to High)</option>
@@ -192,10 +190,11 @@ export default function UpcomingTours() {
                   </select>
                   <button
                     type="button"
-                    className="flex items-center gap-2 px-4 py-3 md:py-2 min-h-[44px] md:min-h-0 rounded-lg border border-neutral-300 text-neutral-700 font-medium hover:bg-neutral-50 transition-colors"
+                    onClick={() => setFilterOpen((f) => !f)}
+                    className="flex items-center gap-2 px-3 py-2 rounded-lg border border-neutral-200 bg-white text-sm text-neutral-700 font-medium hover:bg-neutral-50 transition-colors"
                   >
-                    <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" /></svg>
-                    Filter By
+                    <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" /></svg>
+                    Filter
                   </button>
                 </div>
               </div>
@@ -206,16 +205,18 @@ export default function UpcomingTours() {
                   <p className="mt-2 text-sm">Try changing destination, month or trip name.</p>
                 </div>
               ) : (
-                <div className="space-y-6 min-w-0">
+                <div className="space-y-8 min-w-0">
                   {filteredTours.map((tour, index) => (
-                    <div key={tour.id}>
-                      <TourCard tour={tour} />
-                      {index === 0 && filteredTours.length > 1 && (
-                        <div className="mt-6">
-                          <PromoBanner />
-                        </div>
-                      )}
-                    </div>
+                    <ScrollReveal key={tour.id} variant="blurUp" staggerIndex={index}>
+                      <div>
+                        <TourCard tour={tour} staggerIndex={index} />
+                        {index === 0 && filteredTours.length > 1 && (
+                          <div className="mt-6">
+                            <PromoBanner />
+                          </div>
+                        )}
+                      </div>
+                    </ScrollReveal>
                   ))}
                 </div>
               )}

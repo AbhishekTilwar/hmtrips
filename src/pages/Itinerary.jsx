@@ -6,6 +6,7 @@ import { useAuth } from '../contexts/AuthContext'
 import { createOrder, createPayment, updatePayment, updateOrderStatus, createInquiry } from '../lib/firestore'
 import { openRazorpayCheckout } from '../lib/razorpay'
 import ScrollReveal from '../components/ScrollReveal'
+import { getVibe } from '../utils/destinationVibe'
 
 // Use relative /api so: production = same-origin on Vercel; local = Vite proxy (set VITE_API_BASE_URL in .env)
 const API_BASE = ''
@@ -234,19 +235,29 @@ export default function Itinerary() {
   const formatPrice = (n) => `₹${(n / 1000).toFixed(0)}K`
   const routeLabel = tour.ports?.length ? tour.ports.join(' - ') : `${tour.origin} - ${tour.destination}`
   const nightsDays = `${tour.nights}N/${tour.nights + 1}D`
+  const vibe = getVibe(tour)
+  const isCold = vibe === 'cold'
 
   return (
-    <>
-      {/* Hero */}
-      <section className="relative min-h-[50vh] sm:min-h-[60vh] md:min-h-[70vh] flex items-end overflow-hidden">
+    <div className={`vibe-${vibe} min-h-screen`}>
+      {/* Hero - destination themed with parallax & vibe overlay */}
+      <section className="relative min-h-[55vh] sm:min-h-[65vh] md:min-h-[75vh] flex items-end overflow-hidden">
         <div className="absolute inset-0">
           <img
             src={tour.image}
             alt={tour.name}
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-hero-overlay" />
+          <div className="absolute inset-0 hero-overlay-vibe" />
         </div>
+        {/* Snowflakes for cold destinations */}
+        {isCold && (
+          <div className="snowflakes" aria-hidden>
+            {Array.from({ length: 10 }, (_, i) => (
+              <div key={i} className="snowflake" />
+            ))}
+          </div>
+        )}
         <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
           <Link
             to="/"
@@ -257,10 +268,10 @@ export default function Itinerary() {
             </svg>
             Back to Upcoming Tours
           </Link>
-          <p className="text-blue-300 font-medium uppercase tracking-wider text-sm mb-2">
+          <p className="text-white/80 font-medium uppercase tracking-wider text-sm mb-2 accent-text">
             {tour.tagline}
           </p>
-          <h1 className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-white leading-tight max-w-4xl">
+          <h1 className="font-display text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-white leading-tight max-w-4xl drop-shadow-lg">
             {tour.name}
           </h1>
           <div className="mt-4 md:mt-6 flex flex-wrap gap-x-4 gap-y-1 md:gap-6 text-white/90 text-sm md:text-base">
@@ -282,9 +293,9 @@ export default function Itinerary() {
         </div>
       </section>
 
-      {/* Trip summary strip */}
-      <section className="bg-white border-b border-neutral-200 shadow-sm">
-        <ScrollReveal>
+      {/* Trip summary strip - vibe tint */}
+      <section className="section-bg-vibe border-b border-neutral-200 shadow-sm">
+        <ScrollReveal variant="slideUp" duration={600}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
             <div className="space-y-2">
@@ -340,7 +351,7 @@ export default function Itinerary() {
 
       {/* Your Trip Highlight - 4 images */}
       <section className="py-10 md:py-16 bg-white border-y border-neutral-200">
-        <ScrollReveal>
+        <ScrollReveal variant="slideUp" staggerIndex={1} duration={600}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="font-display text-xl md:text-2xl font-semibold text-neutral-950 mb-6 md:mb-8">
             Your Trip Highlight
@@ -367,34 +378,49 @@ export default function Itinerary() {
       </section>
 
       {/* Itinerary - Day wise details */}
-      <section id="itinerary" className="py-10 md:py-16 bg-white border-t border-neutral-200">
+      <section id="itinerary" className="py-10 md:py-16 section-bg-vibe border-t border-neutral-200">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <ScrollReveal variant="slideLeft" duration={500}>
           <h2 className="font-display text-xl md:text-2xl font-semibold text-neutral-950 mb-1">
             Itinerary
           </h2>
-          <p className="text-neutral-600 text-sm mb-10">Day wise details of your package</p>
-          <div className="space-y-8">
+          <p className="text-neutral-600 text-sm mb-8">Day wise details of your package</p>
+
+          <div className="relative space-y-0">
+            {/* Timeline line (optional vertical connector) */}
+            <div className="absolute left-6 top-12 bottom-12 w-0.5 bg-gradient-to-b from-blue-200 via-blue-100 to-transparent hidden sm:block" aria-hidden />
+
             {tour.itinerary.map((day, i) => (
-              <div key={day.day} className="flex gap-4 md:gap-6">
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-blue-600 text-white font-display text-sm font-bold">
-                  Day {day.day}
+              <div key={day.day} className="relative flex gap-4 sm:gap-6 pb-8 last:pb-0">
+                {/* Day number - prominent circle */}
+                <div className="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-blue-500 text-white font-display text-base font-bold shadow-lg ring-4 ring-white">
+                  {day.day}
                 </div>
-                <div className="flex-1 min-w-0 overflow-visible">
-                  <h3 className="font-display text-lg font-semibold text-neutral-950 break-words">
-                    {day.port}
-                  </h3>
+
+                {/* Day content card */}
+                <div className="flex-1 min-w-0 rounded-xl border border-neutral-200 bg-white p-5 shadow-sm hover:shadow-md hover:border-neutral-300 transition-all">
+                  <div className="flex flex-wrap items-baseline gap-2">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-blue-600">
+                      Day {day.day}
+                    </span>
+                    <span className="text-neutral-300">·</span>
+                    <h3 className="font-display text-lg md:text-xl font-semibold text-neutral-900 break-words">
+                      {day.port}
+                    </h3>
+                  </div>
                   {day.subtitle && (
-                    <p className="text-emerald-600 text-sm font-medium mt-0.5 break-words">
+                    <p className="mt-1.5 text-emerald-600 text-sm font-medium break-words">
                       {day.subtitle}
                     </p>
                   )}
-                  <p className="mt-2 text-neutral-700 leading-relaxed text-sm break-words">
+                  <p className="mt-3 text-neutral-600 text-sm leading-relaxed break-words max-w-3xl">
                     {day.description}
                   </p>
                 </div>
               </div>
             ))}
           </div>
+          </ScrollReveal>
         </div>
       </section>
 
@@ -497,6 +523,6 @@ export default function Itinerary() {
 
       {/* Book CTA + form (creates order & payment for admin) */}
       <BookSection tour={tour} formatPrice={formatPrice} />
-    </>
+    </div>
   )
 }

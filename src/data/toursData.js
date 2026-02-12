@@ -2,6 +2,16 @@ import { useState, useEffect } from 'react'
 import { getToursFromFirestore, getTourByIdFromFirestore } from '../lib/firestore'
 import { tours as staticTours, getTourById as getStaticById } from './tours'
 
+/** Infer vibe from destination/origin when not set (for Firestore tours). */
+function getVibeFromDestination(destination, origin) {
+  const d = (destination || '').toLowerCase()
+  const o = (origin || '').toLowerCase()
+  if (/leh|kashmir|himalaya|snow|winter|gulmarg|manali|shimla/.test(d + ' ' + o)) return 'cold'
+  if (/lakshadweep|island|kadmat|kavaratti/.test(d)) return 'island'
+  if (/goa|beach|tropical/.test(d)) return 'tropical'
+  return 'urban'
+}
+
 export function useTours() {
   const [tours, setTours] = useState([])
   const [loading, setLoading] = useState(true)
@@ -31,6 +41,7 @@ export function useTours() {
 
 function normalizeTour(t) {
   const tripTag = t.tripTag || t.shipName || ''
+  const vibe = ['cold', 'tropical', 'island', 'urban'].includes(t.vibe) ? t.vibe : getVibeFromDestination(t.destination, t.origin)
   return {
     id: t.id,
     name: t.name || '',
@@ -39,6 +50,7 @@ function normalizeTour(t) {
     shipName: tripTag,
     origin: t.origin || '',
     destination: t.destination || '',
+    vibe,
     nights: Number(t.nights) || 0,
     departureDate: t.departureDate || '',
     endDate: t.endDate || '',

@@ -86,38 +86,42 @@ export default function CallbackCard() {
 
   return (
     <>
-      <div className="rounded-2xl border-2 border-blue-200 bg-gradient-to-b from-blue-50 to-white p-6 shadow-card">
-        <div className="flex justify-center mb-4">
-          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-sky-500 text-white">
-            <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm hover:shadow-md transition-shadow">
+        <div className="flex items-center gap-3 mb-3">
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-sky-500 text-white">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
             </svg>
           </span>
+          <div>
+            <h3 className="font-display text-base font-semibold text-neutral-900">
+              One call away
+            </h3>
+            <p className="text-neutral-500 text-xs">
+              Instant help from our travel team
+            </p>
+          </div>
         </div>
-        <h3 className="font-display text-xl font-semibold text-neutral-950 text-center mb-1">
-          Your perfect trip is one call away.
-        </h3>
-        <p className="text-neutral-600 text-sm text-center mb-6">
-          Get instant help from our travel team.
-        </p>
         {sent ? (
-          <p className="text-center text-emerald-600 text-sm py-2">Request sent. We&apos;ll call you soon.</p>
+          <p className="text-center text-emerald-600 text-sm py-2 rounded-lg bg-emerald-50">Request sent. We&apos;ll call you soon.</p>
         ) : (
           <button
             type="button"
             onClick={() => setModalOpen(true)}
-            className="btn-gradient w-full justify-center gap-2 min-h-[44px] md:min-h-0"
+            className="btn-gradient w-full justify-center gap-2 py-2.5 text-sm rounded-lg"
           >
-            <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+            <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
             Request a Callback
           </button>
         )}
-        <div className="flex flex-col sm:flex-row gap-2 mt-4">
-          <a href="tel:+918805795706" className="btn-outline-purple w-full justify-center text-sm py-3 md:py-2.5 min-h-[44px] md:min-h-0 flex items-center">
-            Call +91 8805795706
+        <div className="mt-3 pt-3 border-t border-neutral-100 flex gap-2">
+          <a href="tel:+918805795706" className="flex-1 flex items-center justify-center gap-1.5 rounded-lg border border-neutral-200 bg-neutral-50 py-2 text-xs font-medium text-neutral-700 hover:bg-neutral-100 hover:border-neutral-300 transition-colors">
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+            8805795706
           </a>
-          <a href="tel:+918278717103" className="btn-outline-purple w-full justify-center text-sm py-3 md:py-2.5 min-h-[44px] md:min-h-0 flex items-center">
-            Call +91 8278717103
+          <a href="tel:+918278717103" className="flex-1 flex items-center justify-center gap-1.5 rounded-lg border border-neutral-200 bg-neutral-50 py-2 text-xs font-medium text-neutral-700 hover:bg-neutral-100 hover:border-neutral-300 transition-colors">
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+            8278717103
           </a>
         </div>
       </div>
