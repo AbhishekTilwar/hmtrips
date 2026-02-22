@@ -46,21 +46,20 @@ export default function SplashScreen({ visible }) {
       />
 
       <div className="relative z-10 flex flex-col items-center justify-center gap-8 px-6">
-        {/* Logo mark — circle with HM */}
-        <div
-          className="flex h-24 w-24 sm:h-28 sm:w-28 items-center justify-center rounded-full text-white shadow-xl opacity-0 animate-scale-in [animation-fill-mode:forwards] ring-4 ring-blue-100/50"
-          style={{ background: 'linear-gradient(145deg, #1e40af 0%, #2563eb 45%, #0ea5e9 100%)' }}
-        >
-          <span className="font-display text-3xl sm:text-4xl font-bold tracking-tight">HM</span>
-        </div>
+        {/* Logo image */}
+        <img 
+          src="/logo.png" 
+          alt="HM Orbit Tours" 
+          className="h-44 sm:h-56 w-auto object-contain opacity-0 animate-scale-in [animation-fill-mode:forwards]"
+        />
 
-        {/* Brand name — HM Trip */}
+        {/* Brand name */}
         <div className="flex flex-col items-center gap-2 text-center">
           <h1
             className="font-display text-3xl sm:text-4xl font-semibold text-neutral-900 tracking-tight opacity-0 animate-scale-in [animation-fill-mode:forwards] [animation-delay:150ms]"
             style={{ textShadow: '0 1px 2px rgba(255,255,255,0.8)' }}
           >
-            HM Trip
+            HM Orbit Tours
           </h1>
           <p
             className="text-sm sm:text-base text-neutral-500 font-body font-medium tracking-wide opacity-0 animate-fade-in [animation-fill-mode:forwards] [animation-delay:350ms]"

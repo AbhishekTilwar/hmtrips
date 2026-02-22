@@ -1,5 +1,8 @@
 import { Link } from 'react-router-dom'
 import { getVibe, VIBE_COLORS } from '../utils/destinationVibe'
+import TourInteractions from './TourInteractions'
+
+import { useAuth } from '../contexts/AuthContext'
 
 const VIBE_LABELS = {
   cold: 'Winter',
@@ -8,7 +11,14 @@ const VIBE_LABELS = {
   urban: 'City',
 }
 
-export default function TourCard({ tour, staggerIndex }) {
+export default function TourCard({ tour, staggerIndex, onUnsave, showUnsaveButton = false }) {
+  const { user } = useAuth();
+  
+  // Handler for when user clicks on the tour card
+  const handleTourClick = () => {
+    // Simple click handler without tracking to avoid console errors
+    console.log('Tour clicked:', tour.id);
+  };
   const vibe = getVibe(tour)
   const colors = VIBE_COLORS[vibe] || VIBE_COLORS.urban
 
@@ -35,11 +45,11 @@ export default function TourCard({ tour, staggerIndex }) {
     >
       <div className="flex flex-col sm:flex-row min-w-0">
         {/* Image - fixed aspect, no clipping of overlay content */}
-        <div className="sm:w-[40%] min-w-0 relative aspect-[16/10] sm:aspect-[4/3] sm:min-h-[200px] overflow-hidden flex-shrink-0 rounded-l-xl sm:rounded-l-xl">
+        <div className="sm:w-[40%] min-w-0 relative aspect-[16/10] sm:aspect-[4/3] sm:min-h-[200px] overflow-hidden flex-shrink-0 rounded-l-xl sm:rounded-l-xl bg-neutral-100">
           <img
             src={tour.image}
             alt={tour.name}
-            className="absolute inset-0 w-full h-full object-cover object-center card-image-zoom"
+            className="absolute inset-0 w-full h-full object-contain card-image-zoom"
           />
           <div
             className="absolute inset-0 opacity-50 group-hover:opacity-35 transition-opacity duration-300"
@@ -87,6 +97,19 @@ export default function TourCard({ tour, staggerIndex }) {
             )}
           </div>
 
+          {/* Tour Interactions - Like, Save, Share, View */}
+          <div className="mt-3 flex items-center justify-between">
+            <TourInteractions tour={tour} variant="light" />
+            {showUnsaveButton && onUnsave && (
+              <button
+                onClick={() => onUnsave(tour)}
+                className="ml-2 px-3 py-1 text-xs font-medium text-red-600 bg-red-50 rounded-full hover:bg-red-100 transition-colors border border-red-200"
+              >
+                Remove
+              </button>
+            )}
+          </div>
+
           {/* Bottom row: viewing, price, CTAs - wrap on narrow so nothing is cut */}
           <div className="mt-4 pt-4 border-t border-neutral-100 flex flex-wrap items-center gap-x-4 gap-y-3">
             <span className="text-neutral-500 text-xs tabular-nums shrink-0" title="People viewing">
@@ -107,12 +130,14 @@ export default function TourCard({ tour, staggerIndex }) {
                 to={`/itinerary/${tour.id}`}
                 className="flex-1 sm:flex-none inline-flex items-center justify-center py-2.5 px-4 text-sm font-medium text-white rounded-lg transition-all hover:opacity-90 min-w-0"
                 style={{ background: colors.accent, boxShadow: `0 2px 8px ${colors.glow}` }}
+                onClick={handleTourClick}
               >
                 View Itinerary
               </Link>
               <Link
                 to={`/itinerary/${tour.id}#book`}
                 className="flex-1 sm:flex-none inline-flex items-center justify-center py-2.5 px-4 text-sm font-medium rounded-lg border-2 border-neutral-300 text-neutral-700 hover:bg-neutral-50 hover:border-neutral-400 transition-colors min-w-0"
+                onClick={handleTourClick}
               >
                 Book Now
               </Link>

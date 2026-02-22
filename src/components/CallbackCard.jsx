@@ -2,6 +2,10 @@ import { useState, useEffect } from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import { createInquiry } from '../lib/firestore'
 
+// Primary and Alternative contact numbers
+const PRIMARY_NUMBER = '8278717103'
+const ALTERNATIVE_NUMBER = '8805795706'
+
 const inputClass =
   'w-full px-4 py-3 rounded-lg border border-neutral-300 bg-white text-neutral-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent min-h-[44px] md:min-h-0'
 
@@ -114,14 +118,18 @@ export default function CallbackCard() {
             Request a Callback
           </button>
         )}
-        <div className="mt-3 pt-3 border-t border-neutral-100 flex gap-2">
-          <a href="tel:+918805795706" className="flex-1 flex items-center justify-center gap-1.5 rounded-lg border border-neutral-200 bg-neutral-50 py-2 text-xs font-medium text-neutral-700 hover:bg-neutral-100 hover:border-neutral-300 transition-colors">
-            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
-            8805795706
+        <div className="mt-3 pt-3 border-t border-neutral-100 space-y-2">
+          {/* Primary Number - More Prominent */}
+          <a href="tel:+918278717103" className="flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 py-2.5 text-sm font-semibold text-white hover:from-blue-700 hover:to-blue-600 transition-colors shadow-sm">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+            {PRIMARY_NUMBER}
+            <span className="text-xs opacity-90">(Primary)</span>
           </a>
-          <a href="tel:+918278717103" className="flex-1 flex items-center justify-center gap-1.5 rounded-lg border border-neutral-200 bg-neutral-50 py-2 text-xs font-medium text-neutral-700 hover:bg-neutral-100 hover:border-neutral-300 transition-colors">
+          {/* Alternative Number */}
+          <a href="tel:+918805795706" className="flex items-center justify-center gap-1.5 rounded-lg border border-neutral-200 bg-neutral-50 py-2 text-xs font-medium text-neutral-600 hover:bg-neutral-100 transition-colors">
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
-            8278717103
+            {ALTERNATIVE_NUMBER}
+            <span className="text-neutral-400">(Alternative)</span>
           </a>
         </div>
       </div>

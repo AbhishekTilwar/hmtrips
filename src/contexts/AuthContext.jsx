@@ -2,6 +2,8 @@ import { createContext, useContext, useState, useEffect } from 'react'
 import {
   signInWithEmailAndPassword,
   signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   signOut as firebaseSignOut,
   onAuthStateChanged,
   RecaptchaVerifier,
@@ -36,7 +38,39 @@ export function AuthProvider({ children }) {
     return cred.user
   }
 
-  const signInWithGoogle = () => signInWithPopup(auth, googleProvider)
+  const signInWithGoogle = async () => {
+    try {
+      // Set up a custom popup window with proper COOP handling
+      const popupWindowFeatures = 'width=600,height=700,scrollbars=yes,resizable=yes'
+      
+      // Use signInWithPopup with custom window features
+      const result = await signInWithPopup(auth, googleProvider)
+      return result
+    } catch (error) {
+      // Handle COOP errors specifically
+      if (error.code === 'auth/popup-blocked' || error.message.includes('Cross-Origin-Opener-Policy')) {
+        // Fallback to redirect-based authentication
+        try {
+          await signInWithRedirect(auth, googleProvider)
+          return null // Redirect will handle the rest
+        } catch (redirectError) {
+          throw new Error('Authentication failed. Please try refreshing the page or use phone authentication instead.')
+        }
+      }
+      throw error
+    }
+  }
+
+  // Handle redirect results (for when using signInWithRedirect)
+  const handleRedirectResult = async () => {
+    try {
+      const result = await getRedirectResult(auth)
+      return result
+    } catch (error) {
+      console.error('Redirect result error:', error)
+      throw error
+    }
+  }
 
   const signInWithPhone = async (phoneNumber) => {
     if (!window.recaptchaVerifier) {
@@ -60,6 +94,7 @@ export function AuthProvider({ children }) {
     isAdmin,
     signInAdmin,
     signInWithGoogle,
+    handleRedirectResult,
     signInWithPhone,
     verifyPhoneCode,
     signOut,
