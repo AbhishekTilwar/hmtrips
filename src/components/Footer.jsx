@@ -138,8 +138,11 @@ export default function Footer() {
           <div className="pt-6 border-t border-neutral-800 flex flex-col sm:flex-row justify-between items-center gap-4">
             <p className="text-neutral-500 text-sm text-center md:text-left">© {new Date().getFullYear()} HM Tours. All rights reserved.</p>
             <Link to="/" className="flex items-center gap-2 text-white/80 hover:text-white transition-colors text-sm min-touch py-2 md:py-0">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-700 via-blue-500 to-sky-500 text-white font-bold text-sm">HM</span>
-              HM TOURS
+              <img 
+                src="/logo.png" 
+                alt="HM Orbit Tours" 
+                className="h-24 w-auto object-contain"
+              />
             </Link>
           </div>
         </div>

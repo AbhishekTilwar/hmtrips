@@ -17,7 +17,15 @@ export default function LoginModal({ open, onClose }) {
       await signInWithGoogle()
       onClose()
     } catch (e) {
-      setError(e.message || 'Google sign-in failed')
+      console.error('Google sign-in error:', e)
+      // Provide more specific error messages for COOP issues
+      if (e.message && e.message.includes('Cross-Origin-Opener-Policy')) {
+        setError('Authentication failed due to browser security settings. Please try refreshing the page or use phone authentication instead.')
+      } else if (e.message && e.message.includes('popup-blocked')) {
+        setError('Popup was blocked by your browser. Please allow popups for this site and try again.')
+      } else {
+        setError(e.message || 'Google sign-in failed')
+      }
     } finally {
       setLoading(false)
     }

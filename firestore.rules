@@ -1,0 +1,138 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && request.auth.token.email == 'super@gmail.com';
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Tours collection - Public read, Admin write
+    match /tours/{tourId} {
+      allow read: if true; // Everyone can read tours
+      allow create, update, delete: if isAdmin();
+
+      // Allow incrementing stats for CRM interactions
+      allow update: if isSignedIn()
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['likes', 'saves', 'shares', 'views', 'trending', 'popularityScore']);
+    }
+
+    // User interactions - User can read/write their own
+    match /userInteractions/{interactionId} {
+      allow read: if isSignedIn() && (
+        resource.data.userId == request.auth.uid || isAdmin()
+      );
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    // User behavior profiles - User can read/write their own
+    match /userBehaviorProfiles/{userId} {
+      allow read: if isOwner(userId) || isAdmin();
+      allow create, update: if isOwner(userId);
+      allow delete: if isAdmin();
+    }
+
+    // User behavior events - User can write their own, admins can read all
+    match /userBehaviorEvents/{eventId} {
+      allow read: if isAdmin() || (
+        isSignedIn() && resource.data.userId == request.auth.uid
+      );
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isAdmin();
+    }
+
+    // User sessions - User can read/write their own
+    match /userSessions/{sessionId} {
+      allow read: if isSignedIn() && (
+        resource.data.userId == request.auth.uid || isAdmin()
+      );
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isAdmin();
+    }
+
+    // Search events - User can read/write their own
+    match /userSearchEvents/{eventId} {
+      allow read: if isSignedIn() && (
+        resource.data.userId == request.auth.uid || isAdmin()
+      );
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isAdmin();
+    }
+
+    // Recommendation events - User can read/write their own
+    match /recommendationEvents/{eventId} {
+      allow read: if isSignedIn() && (
+        resource.data.userId == request.auth.uid || isAdmin()
+      );
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isAdmin();
+    }
+
+    // Inquiries - User can read/write their own, admins can read all
+    match /inquiries/{inquiryId} {
+      allow read: if isAdmin() || (
+        isSignedIn() && resource.data.userId == request.auth.uid
+      );
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update: if isAdmin() || (
+        isSignedIn() && resource.data.userId == request.auth.uid
+      );
+      allow delete: if isAdmin();
+    }
+
+    // Orders - User can read/write their own, admins can read all
+    match /orders/{orderId} {
+      allow read: if isAdmin() || (
+        isSignedIn() && resource.data.userId == request.auth.uid
+      );
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update: if isAdmin() || (
+        isSignedIn() && resource.data.userId == request.auth.uid
+      );
+      allow delete: if isAdmin();
+    }
+
+    // Payments - User can read their own, admins can read/write all
+    match /payments/{paymentId} {
+      allow read: if isAdmin() || (
+        isSignedIn() && resource.data.userId == request.auth.uid
+      );
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // Users collection - User can read/write their own profile
+    match /users/{userId} {
+      allow read: if isOwner(userId) || isAdmin();
+      allow create, update: if isOwner(userId);
+      allow delete: if isAdmin();
+    }
+
+    // Admin users - Only admins can access
+    match /adminUsers/{userId} {
+      allow read, write: if isAdmin();
+    }
+
+    // Analytics and stats - Admins only
+    match /analytics/{document=**} {
+      allow read, write: if isAdmin();
+    }
+
+    // Default deny for any other collections
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
