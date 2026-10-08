@@ -59,7 +59,14 @@ export default function ExploreTrips() {
     if (activeCategory) {
       list = list.filter((tour) => {
         const tourCategory = tour.category?.toLowerCase().replace(/\s+/g, "-");
-        return tourCategory === activeCategory;
+        if (tourCategory === activeCategory) return true;
+        if (
+          activeCategory === "beaches" &&
+          (tourCategory === "beaches" || tourCategory === "beaches-trip")
+        ) {
+          return true;
+        }
+        return false;
       });
     }
 

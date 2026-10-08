@@ -8,7 +8,7 @@ const CATEGORIES = [
   { id: "jungle-safari-trip", label: "Jungle Safari Trip" },
   { id: "urban-cities-trip", label: "Urban Cities Trip" },
   { id: "holy-places-worldwide", label: "Holy Places Worldwide" },
-  { id: "beaches-trip", label: "Beaches Trip" },
+  { id: "beaches", label: "Beaches" },
 ];
 
 export default function CategoryFilterBar({

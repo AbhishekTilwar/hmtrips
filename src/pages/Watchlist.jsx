@@ -177,7 +177,7 @@ export default function Watchlist() {
               They'll appear here for easy access.
             </p>
             <a 
-              href="/explore-trips" 
+              href="/#collections" 
               className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 font-medium"
             >
               <MapPin className="w-4 h-4" />
@@ -247,7 +247,7 @@ export default function Watchlist() {
                   </span>
                 </div>
                 <a 
-                  href="/explore-trips" 
+                  href="/#collections" 
                   className="text-blue-600 hover:text-blue-700 font-medium text-sm"
                 >
                   Explore more trips →

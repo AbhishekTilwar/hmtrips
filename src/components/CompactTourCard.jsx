@@ -49,11 +49,7 @@ export default function CompactTourCard({ tour, staggerIndex }) {
         <img
           src={tour.image}
           alt={tour.name}
-          className="absolute inset-0 w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
-          style={{
-            objectFit: 'contain',
-            objectPosition: 'center',
-          }}
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
           loading="lazy"
         />
 

@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 
 export default function Navbar({ onLoginClick }) {
@@ -8,6 +8,19 @@ export default function Navbar({ onLoginClick }) {
   const profileRef = useRef(null)
 
   const { user, signOut } = useAuth()
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  const goToSection = (hash) => (event) => {
+    if (location.pathname !== '/') return
+    event.preventDefault()
+    const id = hash.replace('#', '')
+    if (location.hash !== hash) {
+      navigate({ pathname: '/', hash })
+      return
+    }
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -30,21 +43,18 @@ export default function Navbar({ onLoginClick }) {
           </Link>
 
           <div className="hidden lg:flex items-center gap-8">
-            <button className="text-neutral-700 hover:text-brand-blue font-medium transition-colors flex items-center gap-1">
+            <Link to="/#collections" onClick={goToSection('#collections')} className="text-neutral-700 hover:text-brand-blue font-medium transition-colors">
               Our trips
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-            </button>
-            <button className="text-neutral-700 hover:text-brand-blue font-medium transition-colors flex items-center gap-1">
+            </Link>
+            <Link to="/#collections" onClick={goToSection('#collections')} className="text-neutral-700 hover:text-brand-blue font-medium transition-colors">
               Destinations
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-            </button>
-            <a href="#callback" className="text-neutral-700 hover:text-brand-blue font-medium transition-colors">Group Enquiry</a>
-            <a href="#offers" className="text-neutral-700 hover:text-brand-blue font-medium transition-colors">Blogs</a>
-            <a href="#offers" className="text-neutral-700 hover:text-brand-blue font-medium transition-colors">Offers</a>
+            </Link>
+            <Link to="/#enquiry" onClick={goToSection('#enquiry')} className="text-neutral-700 hover:text-brand-blue font-medium transition-colors">Group Enquiry</Link>
+            <Link to="/#offers" onClick={goToSection('#offers')} className="text-neutral-700 hover:text-brand-blue font-medium transition-colors">Offers</Link>
           </div>
 
           <div className="hidden lg:flex items-center gap-3">
-            <Link to="/" className="btn-gradient text-sm py-2.5 px-5">Find A Trip</Link>
+            <Link to="/#plan" onClick={goToSection('#plan')} className="btn-gradient text-sm py-2.5 px-5">Find A Trip</Link>
             <button type="button" className="btn-outline-purple text-sm py-2.5 px-5">Check-in</button>
             {user ? (
               <div className="relative" ref={profileRef}>
@@ -112,13 +122,12 @@ export default function Navbar({ onLoginClick }) {
 
         {open && (
           <div className="lg:hidden py-4 border-t border-neutral-200 space-y-0">
-            <a href="#callback" className="block py-3 px-4 text-neutral-700 hover:text-brand-blue hover:bg-neutral-50 border-b border-neutral-100 min-h-[44px] flex items-center" onClick={() => setOpen(false)}>Our trips</a>
-            <a href="#destinations" className="block py-3 px-4 text-neutral-700 hover:text-brand-blue hover:bg-neutral-50 border-b border-neutral-100 min-h-[44px] flex items-center" onClick={() => setOpen(false)}>Destinations</a>
-            <a href="#callback" className="block py-3 px-4 text-neutral-700 hover:text-brand-blue hover:bg-neutral-50 border-b border-neutral-100 min-h-[44px] flex items-center" onClick={() => setOpen(false)}>Group Enquiry</a>
-            <a href="#offers" className="block py-3 px-4 text-neutral-700 hover:text-brand-blue hover:bg-neutral-50 border-b border-neutral-100 min-h-[44px] flex items-center" onClick={() => setOpen(false)}>Blogs</a>
-            <a href="#offers" className="block py-3 px-4 text-neutral-700 hover:text-brand-blue hover:bg-neutral-50 border-b border-neutral-100 min-h-[44px] flex items-center" onClick={() => setOpen(false)}>Offers</a>
+            <Link to="/#collections" className="block py-3 px-4 text-neutral-700 hover:text-brand-blue hover:bg-neutral-50 border-b border-neutral-100 min-h-[44px] flex items-center" onClick={() => setOpen(false)}>Our trips</Link>
+            <Link to="/#collections" className="block py-3 px-4 text-neutral-700 hover:text-brand-blue hover:bg-neutral-50 border-b border-neutral-100 min-h-[44px] flex items-center" onClick={() => setOpen(false)}>Destinations</Link>
+            <Link to="/#enquiry" className="block py-3 px-4 text-neutral-700 hover:text-brand-blue hover:bg-neutral-50 border-b border-neutral-100 min-h-[44px] flex items-center" onClick={() => setOpen(false)}>Group Enquiry</Link>
+            <Link to="/#offers" className="block py-3 px-4 text-neutral-700 hover:text-brand-blue hover:bg-neutral-50 border-b border-neutral-100 min-h-[44px] flex items-center" onClick={() => setOpen(false)}>Offers</Link>
             <div className="p-4 space-y-2 border-t border-neutral-200 mt-2">
-              <Link to="/" className="btn-gradient flex items-center justify-center min-h-[44px] w-full" onClick={() => setOpen(false)}>Find A Trip</Link>
+              <Link to="/#plan" className="btn-gradient flex items-center justify-center min-h-[44px] w-full" onClick={() => setOpen(false)}>Find A Trip</Link>
               <button type="button" className="btn-outline-purple w-full min-h-[44px]" onClick={() => setOpen(false)}>Check-in</button>
               {user ? (
                 <div className="space-y-2">

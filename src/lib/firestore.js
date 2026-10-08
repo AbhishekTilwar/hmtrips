@@ -37,6 +37,18 @@ export async function getToursFromFirestore() {
   }
 }
 
+/** Curated homepage selection stored by admin. Read-only; does not change tour fields. */
+export async function getFeaturedTourIds() {
+  try {
+    const snap = await getDoc(doc(db, 'metadata', 'topChoices'))
+    if (!snap.exists()) return []
+    const ids = snap.data().featuredTourIds
+    return Array.isArray(ids) ? ids : []
+  } catch (_) {
+    return []
+  }
+}
+
 // Initialize tour interaction fields if they don't exist
 export async function ensureTourInteractionFields(tourId, tourData) {
   if (!tourId) return;
