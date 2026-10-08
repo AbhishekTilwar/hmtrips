@@ -62,7 +62,7 @@ export default function CategoryFilterBar({
   };
 
   return (
-    <div className="bg-gradient-to-r from-purple-50 via-white to-orange-50 border-b border-neutral-200 shadow-sm">
+    <div className="bg-[#f6f1e8] border-b border-[#e6dccb]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         {/* Desktop Layout */}
         <div className="hidden sm:flex items-center justify-between gap-4">
@@ -72,7 +72,7 @@ export default function CategoryFilterBar({
               {/* Filter Label */}
               <div className="hidden lg:flex items-center gap-2 text-neutral-700 font-medium text-sm whitespace-nowrap flex-shrink-0">
                 <svg
-                  className="w-5 h-5 text-purple-600"
+                  className="w-5 h-5 text-[#8c7352]"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -91,7 +91,7 @@ export default function CategoryFilterBar({
               {canScrollLeft && (
                 <button
                   onClick={() => scroll("left")}
-                  className="hidden md:flex absolute left-0 z-10 items-center justify-center w-8 h-8 rounded-full bg-white shadow-lg border border-neutral-200 text-neutral-600 hover:bg-neutral-50 hover:border-purple-300 transition-all"
+                  className="hidden md:flex absolute left-0 z-10 items-center justify-center w-8 h-8 rounded-full bg-white shadow-lg border border-neutral-200 text-neutral-600 hover:bg-neutral-50 hover:border-[#d4bc94] transition-all"
                   style={{ marginLeft: "-16px" }}
                   aria-label="Scroll left"
                 >
@@ -133,8 +133,8 @@ export default function CategoryFilterBar({
                           whitespace-nowrap transition-all duration-300 ease-out flex-shrink-0
                           ${
                             isActive
-                              ? "bg-gradient-to-r from-purple-600 to-orange-500 text-white shadow-lg scale-105 ring-2 ring-purple-300 ring-offset-2"
-                              : "bg-white text-neutral-700 border border-neutral-300 hover:border-purple-400 hover:bg-purple-50 hover:shadow-md hover:scale-102"
+                              ? "bg-[#1c1915] text-[#f6f1e8]"
+                              : "bg-[#fbf8f3] text-[#1c1915] border border-[#e6dccb] hover:border-[#d4bc94]"
                           }
                         `}
                       >
@@ -162,7 +162,7 @@ export default function CategoryFilterBar({
               {canScrollRight && (
                 <button
                   onClick={() => scroll("right")}
-                  className="hidden md:flex absolute right-0 z-10 items-center justify-center w-8 h-8 rounded-full bg-white shadow-lg border border-neutral-200 text-neutral-600 hover:bg-neutral-50 hover:border-purple-300 transition-all"
+                  className="hidden md:flex absolute right-0 z-10 items-center justify-center w-8 h-8 rounded-full bg-white shadow-lg border border-neutral-200 text-neutral-600 hover:bg-neutral-50 hover:border-[#d4bc94] transition-all"
                   style={{ marginRight: "-16px" }}
                   aria-label="Scroll right"
                 >
@@ -188,8 +188,8 @@ export default function CategoryFilterBar({
           <div className="flex items-center gap-3 flex-shrink-0">
             {/* Trip Count Badge */}
             {activeCategory && (
-              <div className="flex items-center gap-2 px-4 py-2 bg-purple-100 rounded-full">
-                <span className="text-xs font-medium text-purple-700">
+              <div className="flex items-center gap-2 px-4 py-2 bg-[#f3eadc] rounded-full">
+                <span className="text-xs font-medium text-[#8c7352]">
                   {tripCount} trips found
                 </span>
               </div>
@@ -246,7 +246,7 @@ export default function CategoryFilterBar({
                       whitespace-nowrap transition-all duration-300 ease-out
                       ${
                         isActive
-                          ? "bg-gradient-to-r from-purple-600 to-orange-500 text-white shadow-lg ring-2 ring-purple-300 ring-offset-2"
+                          ? "bg-[#1c1915] text-[#f6f1e8]"
                           : "bg-white text-neutral-700 border border-neutral-300"
                       }
                     `}
@@ -273,12 +273,12 @@ export default function CategoryFilterBar({
 
           {/* Mobile: Active Category Info */}
           {activeCategory && (
-            <div className="mt-3 flex items-center justify-between px-3 py-2 bg-purple-50 rounded-lg border border-purple-200">
+            <div className="mt-3 flex items-center justify-between px-3 py-2 bg-[#f6f1e8] rounded-lg border border-[#e6dccb]">
               <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-purple-900">
+                <span className="text-sm font-medium text-[#1c1915]">
                   {CATEGORIES.find((c) => c.id === activeCategory)?.label}
                 </span>
-                <span className="text-xs text-purple-600">
+                <span className="text-xs text-[#8c7352]">
                   ({tripCount} trips)
                 </span>
               </div>

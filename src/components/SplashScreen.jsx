@@ -1,79 +1,102 @@
+import { useRef } from 'react'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
+
+gsap.registerPlugin(useGSAP)
+
 export default function SplashScreen({ visible }) {
+  const root = useRef(null)
+
+  useGSAP(() => {
+    const mm = gsap.matchMedia()
+    mm.add(
+      { reduce: '(prefers-reduced-motion: reduce)' },
+      (context) => {
+        const reduce = context.conditions.reduce
+        const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
+
+        if (reduce) {
+          gsap.set(['.splash-eyebrow', '.splash-logo', '.splash-title', '.splash-tag', '.splash-rule', '.splash-progress'], {
+            autoAlpha: 1,
+          })
+          return
+        }
+
+        gsap.set('.splash-progress-fill', { scaleX: 0, transformOrigin: 'left center' })
+
+        tl.from('.splash-eyebrow', { autoAlpha: 0, y: 10, duration: 0.55 })
+          .from('.splash-logo', { autoAlpha: 0, y: 22, scale: 0.96, duration: 0.85 }, '-=0.25')
+          .from('.splash-title', { autoAlpha: 0, y: 14, duration: 0.6 }, '-=0.4')
+          .from('.splash-tag', { autoAlpha: 0, y: 10, duration: 0.5 }, '-=0.35')
+          .from('.splash-rule', { scaleX: 0, transformOrigin: 'center center', duration: 0.7 }, '-=0.3')
+          .from('.splash-progress', { autoAlpha: 0, duration: 0.35 }, '-=0.35')
+          .to('.splash-progress-fill', { scaleX: 1, duration: 1.6, ease: 'power1.inOut' }, '-=0.2')
+
+        gsap.to('.splash-orb', {
+          y: -16,
+          duration: 3.4,
+          repeat: -1,
+          yoyo: true,
+          ease: 'sine.inOut',
+          stagger: 0.45,
+        })
+      },
+    )
+    return () => mm.revert()
+  }, { scope: root })
+
   return (
     <div
-      className={`fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden bg-[#f8fafc] transition-opacity duration-700 ease-out ${
+      ref={root}
+      className={`fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden bg-[#f6f1e8] transition-opacity duration-700 ease-out ${
         visible ? 'opacity-100' : 'opacity-0 pointer-events-none'
       }`}
       aria-hidden="true"
     >
-      {/* Decorative circles — layered, smooth floating */}
-      <div className="absolute inset-0 overflow-hidden">
+      {/* Atmosphere — same ink / gold family as the site */}
+      <div className="absolute inset-0 overflow-hidden" aria-hidden>
+        <div className="splash-orb absolute -left-28 -top-28 h-72 w-72 rounded-full bg-[#d4bc94]/35 blur-3xl" />
+        <div className="splash-orb absolute -right-20 top-1/4 h-80 w-80 rounded-full bg-[#1c1915]/[0.06] blur-3xl" />
+        <div className="splash-orb absolute bottom-0 left-1/3 h-64 w-64 rounded-full bg-[#e6d3b0]/55 blur-3xl" />
         <div
-          className="absolute -left-24 -top-24 h-64 w-64 rounded-full bg-gradient-to-br from-blue-200/60 to-sky-300/50 blur-2xl animate-float opacity-60"
-          aria-hidden
+          className="absolute inset-0"
+          style={{
+            background:
+              'radial-gradient(ellipse 70% 55% at 50% 42%, rgba(251,248,243,0.9) 0%, rgba(246,241,232,0.4) 45%, rgba(246,241,232,1) 100%)',
+          }}
         />
-        <div
-          className="absolute -right-32 top-1/4 h-80 w-80 rounded-full bg-gradient-to-bl from-indigo-200/50 to-blue-200/40 blur-2xl animate-float-slow opacity-50"
-          aria-hidden
-        />
-        <div
-          className="absolute bottom-1/4 -left-16 h-56 w-56 rounded-full bg-gradient-to-tr from-sky-200/50 to-cyan-200/40 blur-2xl animate-float-slower opacity-55"
-          aria-hidden
-        />
-        <div
-          className="absolute right-1/4 top-1/3 h-40 w-40 rounded-full border border-blue-200/40 bg-white/30 backdrop-blur-sm animate-float"
-          aria-hidden
-        />
-        <div
-          className="absolute left-1/4 bottom-1/3 h-24 w-24 rounded-full border border-sky-200/50 bg-white/40 backdrop-blur-sm animate-float-slow"
-          aria-hidden
-        />
-        <div
-          className="absolute left-1/2 top-1/4 h-16 w-16 -translate-x-1/2 rounded-full bg-blue-100/70 animate-pulse-soft"
-          aria-hidden
-        />
-        <div
-          className="absolute bottom-1/3 right-1/3 h-20 w-20 rounded-full bg-sky-100/60 animate-pulse-soft [animation-delay:1s]"
-          aria-hidden
-        />
+        <div className="absolute inset-x-0 top-0 h-px bg-[#d4bc94]/50" />
+        <div className="absolute inset-x-0 bottom-0 h-px bg-[#d4bc94]/40" />
       </div>
 
-      {/* Subtle gradient overlay for depth */}
-      <div
-        className="absolute inset-0 opacity-[0.04]"
-        style={{ background: 'linear-gradient(135deg, #1e40af 0%, #2563eb 40%, #0ea5e9 100%)' }}
-        aria-hidden
-      />
+      <div className="relative z-10 flex flex-col items-center justify-center gap-5 px-6 text-center">
+        <p className="splash-eyebrow text-[11px] tracking-[0.38em] uppercase text-[#8c7352]">
+          HM Orbit Tours
+        </p>
 
-      <div className="relative z-10 flex flex-col items-center justify-center gap-8 px-6">
-        {/* Logo image */}
-        <img 
-          src="/logo.png" 
-          alt="HM Orbit Tours" 
-          className="h-44 sm:h-56 w-auto object-contain opacity-0 animate-scale-in [animation-fill-mode:forwards]"
+        <img
+          src="/logo.png"
+          alt="HM Orbit Tours"
+          className="splash-logo h-36 sm:h-48 w-auto object-contain"
         />
 
-        {/* Brand name */}
-        <div className="flex flex-col items-center gap-2 text-center">
-          <h1
-            className="font-display text-3xl sm:text-4xl font-semibold text-neutral-900 tracking-tight opacity-0 animate-scale-in [animation-fill-mode:forwards] [animation-delay:150ms]"
-            style={{ textShadow: '0 1px 2px rgba(255,255,255,0.8)' }}
-          >
-            HM Orbit Tours
+        <div className="flex flex-col items-center gap-2">
+          <h1 className="splash-title font-display text-3xl sm:text-5xl font-medium text-[#1c1915] tracking-tight leading-none">
+            Explore Trips
+            <span className="block italic font-normal text-[#8c7352]">& Holidays</span>
           </h1>
-          <p
-            className="text-sm sm:text-base text-neutral-500 font-body font-medium tracking-wide opacity-0 animate-fade-in [animation-fill-mode:forwards] [animation-delay:350ms]"
-          >
+          <p className="splash-tag text-[11px] tracking-[0.28em] uppercase text-[#6f6252] mt-1">
             Explore · Discover · Travel
           </p>
         </div>
 
-        {/* Minimal loading cue */}
+        <div className="splash-rule h-px w-20 bg-[#d4bc94]" aria-hidden />
+
         <div
-          className="mt-2 h-0.5 w-20 overflow-hidden rounded-full bg-blue-100 opacity-0 animate-fade-in [animation-fill-mode:forwards] [animation-delay:500ms]"
+          className="splash-progress mt-2 h-[2px] w-28 overflow-hidden bg-[#e6dccb]"
           aria-hidden
         >
-          <div className="h-full w-1/2 rounded-full bg-gradient-to-r from-blue-500 to-sky-400 animate-shimmer" />
+          <div className="splash-progress-fill h-full w-full bg-[#1c1915]" />
         </div>
       </div>
     </div>

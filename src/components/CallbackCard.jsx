@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import RevealPanel from './RevealPanel'
 import { useAuth } from '../contexts/AuthContext'
 import { createInquiry } from '../lib/firestore'
 
@@ -7,7 +8,7 @@ const PRIMARY_NUMBER = '8278717103'
 const ALTERNATIVE_NUMBER = '8805795706'
 
 const inputClass =
-  'w-full px-4 py-3 rounded-lg border border-neutral-300 bg-white text-neutral-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent min-h-[44px] md:min-h-0'
+  'w-full px-4 py-3 border border-[#e6dccb] bg-white text-[#1c1915] font-medium focus:outline-none focus:ring-1 focus:ring-[#d4bc94] focus:border-[#d4bc94] min-h-[44px] md:min-h-0'
 
 export default function CallbackCard() {
   const { user } = useAuth()
@@ -90,9 +91,9 @@ export default function CallbackCard() {
 
   return (
     <>
-      <div className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm hover:shadow-md transition-shadow">
+      <div className="border border-[#e6dccb] bg-[#fbf8f3] p-5 shadow-sm transition-shadow duration-500 hover:shadow-lg">
         <div className="flex items-center gap-3 mb-3">
-          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-sky-500 text-white">
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#1c1915] text-[#d4bc94]">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
             </svg>
@@ -120,13 +121,13 @@ export default function CallbackCard() {
         )}
         <div className="mt-3 pt-3 border-t border-neutral-100 space-y-2">
           {/* Primary Number - More Prominent */}
-          <a href="tel:+918278717103" className="flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 py-2.5 text-sm font-semibold text-white hover:from-blue-700 hover:to-blue-600 transition-colors shadow-sm">
+          <a href="tel:+918278717103" className="flex items-center justify-center gap-2 bg-[#1c1915] py-2.5 text-sm font-semibold text-[#f6f1e8] hover:bg-[#2a241c] transition-colors">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
             {PRIMARY_NUMBER}
             <span className="text-xs opacity-90">(Primary)</span>
           </a>
           {/* Alternative Number */}
-          <a href="tel:+918805795706" className="flex items-center justify-center gap-1.5 rounded-lg border border-neutral-200 bg-neutral-50 py-2 text-xs font-medium text-neutral-600 hover:bg-neutral-100 transition-colors">
+          <a href="tel:+918805795706" className="flex items-center justify-center gap-1.5 border border-[#e6dccb] bg-[#f6f1e8] py-2 text-xs font-medium text-[#6f6252] hover:border-[#d4bc94] transition-colors">
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
             {ALTERNATIVE_NUMBER}
             <span className="text-neutral-400">(Alternative)</span>
@@ -142,8 +143,9 @@ export default function CallbackCard() {
             onClick={closeModal}
             aria-hidden
           />
+          <RevealPanel className="relative w-full max-w-md my-auto">
           <div
-            className="relative w-full max-w-md rounded-2xl bg-white border border-neutral-200 shadow-2xl p-6 md:p-8 my-auto"
+            className="relative w-full bg-[#fbf8f3] border border-[#e6dccb] shadow-2xl p-6 md:p-8"
             role="dialog"
             aria-modal="true"
             aria-labelledby="callback-modal-title"
@@ -161,7 +163,7 @@ export default function CallbackCard() {
             </button>
 
             <div className="flex justify-center mb-4">
-              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-sky-500 text-white">
+              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#1c1915] text-[#d4bc94]">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
@@ -208,6 +210,7 @@ export default function CallbackCard() {
               </button>
             </form>
           </div>
+          </RevealPanel>
         </div>
       )}
     </>

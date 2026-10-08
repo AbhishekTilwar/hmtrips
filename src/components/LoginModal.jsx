@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useAuth } from '../contexts/AuthContext'
+import RevealPanel from './RevealPanel'
 
 export default function LoginModal({ open, onClose }) {
   const { signInWithGoogle, signInWithPhone, verifyPhoneCode, signOut, user } = useAuth()
@@ -71,10 +72,11 @@ export default function LoginModal({ open, onClose }) {
   if (!open) return null
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50" onClick={onClose}>
-      <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6" onClick={(e) => e.stopPropagation()}>
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-[#121820]/55" onClick={onClose}>
+      <RevealPanel className="max-w-md w-full">
+      <div className="bg-[#fbf8f3] border border-[#e6dccb] shadow-xl w-full p-6" onClick={(e) => e.stopPropagation()}>
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-bold text-slate-900">Login / Register</h2>
+          <h2 className="font-display text-3xl font-medium text-[#1c1915]">Login / Register</h2>
           <button type="button" onClick={onClose} className="p-2 text-slate-500 hover:text-slate-700" aria-label="Close">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
           </button>
@@ -125,7 +127,7 @@ export default function LoginModal({ open, onClose }) {
                 </div>
                 <div className="flex gap-2">
                   <button type="button" onClick={back} className="px-4 py-2 border border-slate-300 rounded-lg">Back</button>
-                  <button type="submit" disabled={loading} className="flex-1 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50">
+                  <button type="submit" disabled={loading} className="btn-gradient flex-1 py-2 disabled:opacity-50">
                     {loading ? 'Sending…' : 'Send code'}
                   </button>
                 </div>
@@ -147,7 +149,7 @@ export default function LoginModal({ open, onClose }) {
                 </div>
                 <div className="flex gap-2">
                   <button type="button" onClick={back} className="px-4 py-2 border border-slate-300 rounded-lg">Back</button>
-                  <button type="submit" disabled={loading} className="flex-1 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50">
+                  <button type="submit" disabled={loading} className="btn-gradient flex-1 py-2 disabled:opacity-50">
                     {loading ? 'Verifying…' : 'Verify'}
                   </button>
                 </div>
@@ -157,6 +159,7 @@ export default function LoginModal({ open, onClose }) {
           </>
         )}
       </div>
+      </RevealPanel>
     </div>
   )
 }

@@ -2,8 +2,12 @@
  * Homepage — collections and departures on one page.
  * Tour fields and stored values are unchanged; only presentation and in-page browsing.
  */
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
+
+gsap.registerPlugin(useGSAP)
 import { tours as staticTours, getFilterOptionsFromTours } from '../data/tours'
 import { useTours } from '../data/toursData'
 import { useAuth } from '../contexts/AuthContext'
@@ -92,6 +96,27 @@ export default function UpcomingTours() {
   const tours = toursFromFirestore.length > 0 ? toursFromFirestore : staticTours
   const { user } = useAuth()
   const location = useLocation()
+  const pageRef = useRef(null)
+
+  useGSAP(() => {
+    const mm = gsap.matchMedia()
+    mm.add(
+      { reduce: '(prefers-reduced-motion: reduce)' },
+      (context) => {
+        if (context.conditions.reduce) return
+        gsap.fromTo('.hero-plate', { scale: 1.08 }, { scale: 1, duration: 16, ease: 'none' })
+        gsap.from('.collection-tile', {
+          autoAlpha: 0,
+          y: 28,
+          duration: 0.7,
+          stagger: 0.05,
+          ease: 'power3.out',
+          delay: 0.1,
+        })
+      },
+    )
+    return () => mm.revert()
+  }, { scope: pageRef })
 
   const { recommendations } = useCRMRecommendations(tours, {
     limit: 6,
@@ -288,10 +313,10 @@ export default function UpcomingTours() {
   return (
     <>
       <GuidanceModal open={showGuidanceModal} onClose={() => setShowGuidanceModal(false)} />
-      <div className="bg-[#f6f1e8] min-h-screen min-h-screen-mobile overflow-x-hidden">
+      <div ref={pageRef} className="bg-[#f6f1e8] min-h-screen min-h-screen-mobile overflow-x-hidden">
         <section className="relative overflow-hidden">
           <div
-            className="absolute inset-0 bg-cover bg-center"
+            className="hero-plate absolute inset-0 bg-cover bg-center"
             style={{
               backgroundImage:
                 'url(https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1800&q=80)',
@@ -459,7 +484,7 @@ export default function UpcomingTours() {
                   key={collection.id}
                   type="button"
                   onClick={() => selectCollection(collection.id)}
-                  className={`group relative text-left overflow-hidden min-h-[168px] sm:min-h-[210px] ${
+                  className={`collection-tile group relative text-left overflow-hidden min-h-[168px] sm:min-h-[210px] ${
                     collection.id === 'featured' ? 'col-span-2 md:col-span-2 lg:col-span-2 min-h-[210px] sm:min-h-[250px]' : ''
                   } ${selected ? 'ring-2 ring-[#1c1915] ring-offset-2 ring-offset-[#f6f1e8]' : ''}`}
                   aria-pressed={selected}

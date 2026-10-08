@@ -9,7 +9,7 @@ const VIBE_LABELS = {
   urban: 'City',
 }
 
-export default function CompactTourCard({ tour, staggerIndex }) {
+export default function CompactTourCard({ tour }) {
   const vibe = getVibe(tour)
   const colors = VIBE_COLORS[vibe] || VIBE_COLORS.urban
 
@@ -29,10 +29,7 @@ export default function CompactTourCard({ tour, staggerIndex }) {
 
   return (
     <article
-      className="group rounded-xl border border-neutral-200 bg-white overflow-hidden transition-all duration-300 ease-out hover:shadow-xl hover:border-neutral-300 hover:-translate-y-1 flex flex-col h-full"
-      style={{
-        boxShadow: staggerIndex != null ? `0 2px 12px -2px ${colors.glow}` : undefined,
-      }}
+      className="group border border-[#e6dccb] bg-[#fbf8f3] overflow-hidden transition-all duration-500 ease-out hover:shadow-[0_22px_40px_-28px_rgba(28,25,21,0.55)] hover:-translate-y-1 flex flex-col h-full"
     >
       {/* Image Section with Smart Fit */}
       <div className="relative w-full aspect-[4/3] overflow-hidden bg-gradient-to-br from-neutral-100 to-neutral-50">
@@ -49,7 +46,7 @@ export default function CompactTourCard({ tour, staggerIndex }) {
         <img
           src={tour.image}
           alt={tour.name}
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          className="card-image-zoom absolute inset-0 w-full h-full object-cover"
           loading="lazy"
         />
 
@@ -62,14 +59,12 @@ export default function CompactTourCard({ tour, staggerIndex }) {
         {/* Category/Vibe Badge - Top Left */}
         <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
           <span
-            className="rounded-lg px-3 py-1.5 text-white text-xs font-bold uppercase tracking-wide shadow-lg leading-tight w-fit backdrop-blur-sm"
-            style={{ backgroundColor: colors.accent }}
+            className="px-3 py-1.5 text-[#f6f1e8] text-[10px] font-medium uppercase tracking-[0.16em] leading-tight w-fit bg-[#1c1915]/85"
           >
             {badgeLine1}
           </span>
           <span
-            className="rounded-lg px-3 py-1 text-white/95 text-[11px] font-medium uppercase tracking-wide leading-tight truncate max-w-[180px] w-fit backdrop-blur-sm"
-            style={{ backgroundColor: colors.accent }}
+            className="px-3 py-1 text-[#1c1915] text-[10px] font-medium uppercase tracking-[0.14em] leading-tight truncate max-w-[180px] w-fit bg-[#d4bc94]"
             title={tagLabel}
           >
             {badgeLine2}
@@ -79,7 +74,7 @@ export default function CompactTourCard({ tour, staggerIndex }) {
         {/* Offers Badge - Top Right */}
         {(tour.offers?.length > 0 || tour.offer) && (
           <div className="absolute top-3 right-3 z-10">
-            <span className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-500 px-3 py-1.5 text-xs font-bold text-white shadow-lg backdrop-blur-sm">
+            <span className="inline-flex items-center gap-1.5 bg-[#fbf8f3]/95 px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.12em] text-[#1c1915]">
               <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
               </svg>
@@ -127,8 +122,7 @@ export default function CompactTourCard({ tour, staggerIndex }) {
             <div className="flex items-baseline gap-1.5">
               <span className="text-[10px] uppercase tracking-wider text-neutral-400">From</span>
               <span
-                className="font-display text-xl font-bold tabular-nums"
-                style={{ color: colors.accent }}
+                className="font-display text-xl font-medium tabular-nums text-[#1c1915]"
               >
                 ₹{tour.pricePerGuest?.toLocaleString('en-IN')}
               </span>
@@ -144,18 +138,13 @@ export default function CompactTourCard({ tour, staggerIndex }) {
           <div className="grid grid-cols-2 gap-2">
             <Link
               to={`/itinerary/${tour.id}`}
-              className="inline-flex items-center justify-center py-2.5 px-3 text-sm font-semibold text-white rounded-lg transition-all hover:opacity-90 hover:shadow-lg"
-              style={{
-                background: colors.accent,
-                boxShadow: `0 2px 8px ${colors.glow}`
-              }}
+              className="inline-flex items-center justify-center py-2.5 px-3 text-[11px] tracking-[0.14em] uppercase font-medium text-[#f6f1e8] bg-[#1c1915] transition-colors hover:bg-[#2a241c]"
             >
               View Details
             </Link>
             <Link
               to={`/itinerary/${tour.id}#book`}
-              className="inline-flex items-center justify-center py-2.5 px-3 text-sm font-semibold rounded-lg border-2 text-neutral-700 hover:bg-neutral-50 transition-all"
-              style={{ borderColor: colors.accent }}
+              className="inline-flex items-center justify-center py-2.5 px-3 text-[11px] tracking-[0.14em] uppercase font-medium border border-[#1c1915] text-[#1c1915] hover:bg-[#1c1915] hover:text-[#f6f1e8] transition-colors"
             >
               Book Now
             </Link>

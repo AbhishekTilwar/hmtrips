@@ -131,9 +131,9 @@ export default function ExploreTrips() {
 
   if (toursLoading && allTours.length === 0) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 via-white to-orange-50">
+      <div className="min-h-screen flex items-center justify-center bg-[#f6f1e8]">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-purple-600 mx-auto"></div>
+          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-[#1c1915] mx-auto"></div>
           <p className="mt-6 text-lg text-gray-700 font-medium">
             Loading amazing trips...
           </p>
@@ -146,7 +146,7 @@ export default function ExploreTrips() {
   }
 
   return (
-    <div className="bg-gradient-to-br from-purple-50/30 via-white to-orange-50/30 min-h-screen">
+    <div className="bg-[#f6f1e8] min-h-screen">
       {/* Category Filter Bar */}
       <CategoryFilterBar
         activeCategory={activeCategory}
@@ -179,7 +179,7 @@ export default function ExploreTrips() {
                   )}
                 </h1>
                 <p className="text-neutral-600 text-base">
-                  <span className="font-semibold text-purple-600">
+                  <span className="font-semibold text-[#8c7352]">
                     {filteredTours.length}
                   </span>{" "}
                   amazing {filteredTours.length === 1 ? "trip" : "trips"}{" "}
@@ -199,7 +199,7 @@ export default function ExploreTrips() {
                   id="sort"
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="px-4 py-2.5 text-sm font-medium text-neutral-700 bg-white border border-neutral-300 rounded-lg hover:border-purple-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                  className="px-4 py-2.5 text-sm font-medium text-[#1c1915] bg-[#fbf8f3] border border-[#e6dccb] hover:border-[#d4bc94] focus:outline-none focus:ring-1 focus:ring-[#d4bc94] transition-all"
                 >
                   <option value="date">Departure Date</option>
                   <option value="price">Price (Low to High)</option>
@@ -210,7 +210,7 @@ export default function ExploreTrips() {
                 {(activeCategory || destination || month || nights) && (
                   <button
                     onClick={handleClearAllFilters}
-                    className="px-4 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-purple-600 to-orange-500 rounded-lg hover:shadow-lg transition-all duration-300 whitespace-nowrap"
+                    className="px-4 py-2.5 text-[11px] tracking-[0.16em] uppercase text-[#1c1915] bg-[#d4bc94] hover:bg-[#c9ad80] transition-colors whitespace-nowrap"
                   >
                     Clear All
                   </button>
@@ -233,7 +233,7 @@ export default function ExploreTrips() {
                 </p>
                 <button
                   onClick={handleClearAllFilters}
-                  className="inline-flex items-center gap-2 px-6 py-3 text-base font-semibold text-white bg-gradient-to-r from-purple-600 to-orange-500 rounded-lg hover:shadow-xl transition-all duration-300"
+                  className="inline-flex items-center gap-2 px-6 py-3 text-[11px] tracking-[0.16em] uppercase text-[#f6f1e8] bg-[#1c1915] hover:bg-[#2a241c] transition-colors"
                 >
                   <svg
                     className="w-5 h-5"
@@ -274,7 +274,7 @@ export default function ExploreTrips() {
               <div className="text-center">
                 <p className="text-neutral-600 text-sm">
                   Showing{" "}
-                  <span className="font-semibold text-purple-600">
+                  <span className="font-semibold text-[#8c7352]">
                     {filteredTours.length}
                   </span>{" "}
                   of <span className="font-semibold">{allTours.length}</span>{" "}
@@ -283,7 +283,7 @@ export default function ExploreTrips() {
                 {activeCategory && (
                   <p className="text-neutral-500 text-xs mt-2">
                     Filtered by:{" "}
-                    <span className="font-medium text-purple-600">
+                    <span className="font-medium text-[#8c7352]">
                       {activeCategory
                         .split("-")
                         .map(
@@ -302,15 +302,15 @@ export default function ExploreTrips() {
 
       {/* Bottom CTA Section */}
       {filteredTours.length > 0 && (
-        <section className="bg-gradient-to-r from-purple-600 to-orange-500 py-12">
+        <section className="bg-[#121820] py-14">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="font-display text-2xl sm:text-3xl font-bold text-white mb-3">
               Can't find what you're looking for?
             </h2>
-            <p className="text-purple-100 text-base sm:text-lg mb-6">
+            <p className="text-[#d9d0c3] text-base sm:text-lg mb-6">
               Contact us to create a custom trip tailored just for you
             </p>
-            <button className="inline-flex items-center gap-2 px-8 py-3.5 text-base font-semibold text-purple-600 bg-white rounded-lg hover:bg-purple-50 transition-all duration-300 shadow-lg hover:shadow-xl">
+            <button className="inline-flex items-center gap-2 px-8 py-3.5 text-[11px] tracking-[0.16em] uppercase text-[#1c1915] bg-[#d4bc94] hover:bg-[#c9ad80] transition-colors">
               <svg
                 className="w-5 h-5"
                 fill="none"
